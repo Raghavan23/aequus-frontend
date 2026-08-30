@@ -29,7 +29,7 @@ interface InvoiceItem {
 }
 
 @Component({
-  selector: 'finz-home',
+  selector: 'aequus-home',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './home.component.html',

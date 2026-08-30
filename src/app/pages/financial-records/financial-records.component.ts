@@ -16,7 +16,7 @@ import {
 type ViewMode = 'list' | 'choose-type' | 'choose-category' | 'enter-amount';
 
 @Component({
-  selector: 'finz-financial-records',
+  selector: 'aequus-financial-records',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './financial-records.component.html',

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "finz-frontend": {
+    "aequus-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -13,12 +13,12 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "finz",
+      "prefix": "aequus",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/finz-frontend",
+            "outputPath": "dist/aequus-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -52,8 +52,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
-            "production": { "buildTarget": "finz-frontend:build:production" },
-            "development": { "buildTarget": "finz-frontend:build:development" }
+            "production": { "buildTarget": "aequus-frontend:build:production" },
+            "development": { "buildTarget": "aequus-frontend:build:development" }
           },
           "defaultConfiguration": "development"
         }

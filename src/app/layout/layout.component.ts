@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 
 @Component({
-  selector: 'finz-layout',
+  selector: 'aequus-layout',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './layout.component.html',

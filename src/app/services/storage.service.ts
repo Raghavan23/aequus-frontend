@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-const TOKEN_KEY = 'finz_token';
-const USER_KEY = 'finz_user';
+const TOKEN_KEY = 'aequus_token';
+const USER_KEY = 'aequus_user';
 
 /**
  * Thin wrapper around localStorage so components/services never touch the
