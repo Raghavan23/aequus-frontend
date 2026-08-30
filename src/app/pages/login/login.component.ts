@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+﻿import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -16,6 +16,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   loading = false;
   errorMessage: string | null = null;
+  showPassword = false;
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -30,6 +31,10 @@ export class LoginComponent {
 
   get password() {
     return this.form.controls.password;
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 
   submit(): void {
