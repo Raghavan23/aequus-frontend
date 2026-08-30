@@ -23,7 +23,7 @@
       </div>
     }
 
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <form [formGroup]="form" (ngSubmit)="submit()" autocomplete="off" novalidate>
       <div class="form-field">
         <label for="email">Email Address</label>
         <div class="input-wrapper" [class.has-error]="email.touched && email.invalid">
@@ -31,7 +31,7 @@
             <rect x="2" y="4" width="20" height="16" rx="2"></rect>
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
           </svg>
-          <input id="email" type="email" formControlName="email" placeholder="name@example.com" autocomplete="email" />
+          <input id="email" type="email" formControlName="email" placeholder="Enter your email" autocomplete="off" />
         </div>
         @if (email.touched && email.invalid) {
           <span class="field-error">
@@ -60,7 +60,7 @@
             [type]="showPassword ? 'text' : 'password'"
             formControlName="password"
             placeholder="Enter your password"
-            autocomplete="current-password"
+            autocomplete="new-password"
           />
           <button type="button" class="toggle-password" (click)="togglePassword()" [title]="showPassword ? 'Hide password' : 'Show password'">
             @if (showPassword) {

@@ -23,7 +23,7 @@
       </div>
     }
 
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <form [formGroup]="form" (ngSubmit)="submit()" autocomplete="off" novalidate>
       <div class="form-field">
         <label for="name">Full Name</label>
         <div class="input-wrapper" [class.has-error]="name.touched && name.invalid">
@@ -31,7 +31,7 @@
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
-          <input id="name" type="text" formControlName="name" placeholder="John Doe" autocomplete="name" />
+          <input id="name" type="text" formControlName="name" placeholder="John Doe" autocomplete="off" />
         </div>
         @if (name.touched && name.invalid) {
           <span class="field-error">
@@ -52,7 +52,7 @@
             <rect x="2" y="4" width="20" height="16" rx="2"></rect>
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
           </svg>
-          <input id="email" type="email" formControlName="email" placeholder="name@example.com" autocomplete="email" />
+          <input id="email" type="email" formControlName="email" placeholder="Enter your email" autocomplete="off" />
         </div>
         @if (email.touched && email.invalid) {
           <span class="field-error">
