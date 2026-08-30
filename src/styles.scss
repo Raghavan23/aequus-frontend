@@ -1,0 +1,118 @@
+// ============================================================
+// Finz — Global styles & Modern Dark Design System
+// ============================================================
+
+:root {
+  // Theme Base Colors
+  --bg-app: #0c0d12;
+  --bg-surface: #14161d;
+  --bg-surface-elevated: #1a1d26;
+  --bg-surface-subtle: #212530;
+  --bg-surface-hover: #282c3a;
+
+  // Borders
+  --border-subtle: #232733;
+  --border-light: #2e3444;
+  --border-focus: #4f8bf9;
+
+  // Typography
+  --text-primary: #ffffff;
+  --text-secondary: #9499a8;
+  --text-muted: #656b7c;
+  --text-disabled: #464b58;
+
+  // Accent Colors
+  --accent-blue: #3b82f6;
+  --accent-blue-light: #60a5fa;
+  --accent-blue-glow: rgba(59, 130, 246, 0.25);
+  
+  --accent-green: #10b981;
+  --accent-green-bg: rgba(16, 185, 129, 0.15);
+  --accent-green-text: #34d399;
+
+  --accent-amber: #f59e0b;
+  --accent-amber-bg: rgba(245, 158, 11, 0.15);
+  --accent-amber-text: #fbbf24;
+
+  --accent-orange: #f97316;
+  --accent-orange-bg: rgba(249, 115, 22, 0.15);
+
+  --accent-purple: #a855f7;
+  --accent-purple-bg: rgba(168, 85, 247, 0.15);
+
+  --accent-red: #ef4444;
+  --accent-red-bg: rgba(239, 68, 68, 0.15);
+  --accent-red-text: #f87171;
+
+  // Radius
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-pill: 9999px;
+
+  // Shadows
+  --shadow-card: 0 8px 24px -4px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.35);
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #07080b;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  outline: none;
+  border: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

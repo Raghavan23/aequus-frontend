@@ -1,0 +1,143 @@
+<div class="finz-app-shell">
+  <!-- Slim Rail Sidebar -->
+  <aside class="sidebar-rail">
+    <!-- Brand Logo -->
+    <a routerLink="/home" class="brand-logo" title="Finz Dashboard">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L15 8L21 11L15 14L12 20L9 14L3 11L9 8L12 2Z" fill="#FFFFFF"/>
+        <circle cx="12" cy="11" r="2" fill="#0c0d12"/>
+      </svg>
+    </a>
+
+    <!-- Navigation Icon Links -->
+    <nav class="rail-nav">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item" title="Overview">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </a>
+
+      <a routerLink="/financial-records" routerLinkActive="active" class="nav-item" title="Financial Records">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+      </a>
+
+      <button type="button" class="nav-item" title="Analytics">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+        </svg>
+      </button>
+
+      <button type="button" class="nav-item" title="Invoices">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </button>
+
+      <button type="button" class="nav-item" title="Schedules & Timer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </button>
+
+      <button type="button" class="nav-item" title="Apps">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="5" cy="5" r="2"></circle>
+          <circle cx="12" cy="5" r="2"></circle>
+          <circle cx="19" cy="5" r="2"></circle>
+          <circle cx="5" cy="12" r="2"></circle>
+          <circle cx="12" cy="12" r="2"></circle>
+          <circle cx="19" cy="12" r="2"></circle>
+          <circle cx="5" cy="19" r="2"></circle>
+          <circle cx="12" cy="19" r="2"></circle>
+          <circle cx="19" cy="19" r="2"></circle>
+        </svg>
+      </button>
+
+      <button type="button" class="nav-item" title="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Rail Footer / Logout -->
+    <div class="rail-footer">
+      <button type="button" class="nav-item logout-btn" (click)="logout()" title="Logout">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Container (Header + Content) -->
+  <div class="main-wrapper">
+    <!-- Top Header Bar -->
+    <header class="app-header">
+      <div class="header-left">
+        <h1 class="page-title">Overview</h1>
+      </div>
+
+      <div class="header-right">
+        <!-- Search Pill -->
+        <div class="search-bar">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" [(ngModel)]="searchQuery" placeholder="Search" class="search-input" />
+        </div>
+
+        <!-- User Profile Pill -->
+        <div class="user-pill" (click)="toggleUserMenu()" [class.open]="showUserMenu">
+          <div class="user-avatar-wrap">
+            <div class="user-avatar-placeholder">{{ initials }}</div>
+          </div>
+          <div class="user-info">
+            <span class="user-name">{{ userName }}</span>
+            <span class="user-email">{{ userEmail }}</span>
+          </div>
+          <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+
+          <!-- Dropdown menu -->
+          <div class="user-menu-dropdown" *ngIf="showUserMenu">
+            <a routerLink="/financial-records" class="menu-item">Financial Records</a>
+            <div class="menu-divider"></div>
+            <button type="button" class="menu-item text-danger" (click)="logout()">Sign Out</button>
+          </div>
+        </div>
+
+        <!-- Notification Bell Button -->
+        <button class="notif-btn" type="button" title="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notif-badge"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

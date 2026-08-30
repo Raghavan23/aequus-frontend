@@ -1,0 +1,159 @@
+<!-- ============ LIST VIEW ============ -->
+@if (mode === 'list') {
+  <div class="page-header">
+    <div>
+      <h1>Financial Records</h1>
+      <p class="lede">Manage and review your saved transactions.</p>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="startAdd()">+ Add Record</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert-error">{{ errorMessage }}</div>
+  }
+
+  @if (loading) {
+    <div class="panel state-message">Loading your records...</div>
+  } @else if (records.length === 0) {
+    <div class="panel empty-state">
+      <div class="empty-icon">👛</div>
+      <h2>No financial records yet.</h2>
+      <p>Start by recording your first income or expense to get a clear picture of your finances.</p>
+      <button class="btn btn-primary" type="button" (click)="startAdd()">+ Add Financial Record</button>
+    </div>
+  } @else {
+    <div class="panel table-panel">
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (record of records; track record.id) {
+            <tr (click)="startEdit(record)">
+              <td>{{ categoryLabel(record.category) }}</td>
+              <td>
+                <span class="badge" [class.badge-income]="record.type === FinancialType.INCOME"
+                      [class.badge-expense]="record.type === FinancialType.EXPENSE">
+                  {{ record.type === FinancialType.INCOME ? 'Income' : 'Expense' }}
+                </span>
+              </td>
+              <td [class.amount-income]="record.type === FinancialType.INCOME"
+                  [class.amount-expense]="record.type === FinancialType.EXPENSE">
+                {{ record.type === FinancialType.INCOME ? '+' : '-' }}₹{{ record.amount | number: '1.2-2' }}
+              </td>
+              <td class="actions-col">
+                <button class="icon-btn" type="button" title="Edit" (click)="startEdit(record); $event.stopPropagation()">✏️</button>
+                <button class="icon-btn icon-btn-danger" type="button" title="Delete"
+                        [disabled]="deletingId === record.id"
+                        (click)="delete(record, $event)">🗑️</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+}
+
+<!-- ============ CHOOSE TYPE ============ -->
+@if (mode === 'choose-type') {
+  <button class="back-link" type="button" (click)="backToList()">← Back to Records</button>
+  <h1>Financial Records</h1>
+  <p class="lede">Select whether this is income or an expense.</p>
+
+  <div class="type-grid">
+    <button class="type-card" type="button" (click)="chooseType(FinancialType.INCOME)">
+      <span class="type-icon">💰</span>
+      <span class="type-label">INCOME</span>
+    </button>
+    <button class="type-card" type="button" (click)="chooseType(FinancialType.EXPENSE)">
+      <span class="type-icon">💸</span>
+      <span class="type-label">EXPENSE</span>
+    </button>
+  </div>
+}
+
+<!-- ============ CHOOSE CATEGORY ============ -->
+@if (mode === 'choose-category') {
+  <button class="back-link" type="button" (click)="backToType()">← Back</button>
+  <h1>Choose a category</h1>
+  <p class="lede">
+    {{ draftType === FinancialType.INCOME ? 'Choose an income category.' : 'Select the most appropriate category for this expense.' }}
+  </p>
+
+  <div class="category-grid">
+    @for (option of categoryOptions; track option.value) {
+      <button class="category-card" type="button" (click)="chooseCategory(option.value)">
+        <h3>{{ option.label }}</h3>
+        <p>{{ option.description }}</p>
+      </button>
+    }
+  </div>
+}
+
+<!-- ============ ENTER AMOUNT (also used for edit) ============ -->
+@if (mode === 'enter-amount') {
+  <button class="back-link" type="button" (click)="editingId ? backToList() : backToCategory()">
+    ← {{ editingId ? 'Back to Records' : 'Back' }}
+  </button>
+
+  <div class="amount-panel">
+    <div class="amount-panel-header">
+      <h1>{{ editingId ? 'Edit Record' : 'Enter Amount' }}</h1>
+      @if (editingId) {
+        <button class="icon-btn icon-btn-danger" type="button" title="Delete record" (click)="deleteFromEdit()">🗑️</button>
+      }
+    </div>
+
+    @if (errorMessage) {
+      <div class="alert-error">{{ errorMessage }}</div>
+    }
+
+    <span class="category-chip">{{ draftCategory ? categoryLabel(draftCategory) : '' }}</span>
+
+    <div class="amount-input-row">
+      <span class="currency">₹</span>
+      <input
+        type="number"
+        min="0.01"
+        step="0.01"
+        placeholder="0.00"
+        [(ngModel)]="draftAmount"
+        name="amount"
+      />
+    </div>
+
+    @if (editingId) {
+      <div class="type-toggle">
+        <button
+          type="button"
+          class="toggle-option"
+          [class.active]="draftType === FinancialType.EXPENSE"
+          (click)="draftType = FinancialType.EXPENSE; draftCategory = null; mode = 'choose-category'"
+        >
+          Expense
+        </button>
+        <button
+          type="button"
+          class="toggle-option"
+          [class.active]="draftType === FinancialType.INCOME"
+          (click)="draftType = FinancialType.INCOME; draftCategory = null; mode = 'choose-category'"
+        >
+          Income
+        </button>
+      </div>
+    }
+
+    <div class="amount-actions">
+      <button class="btn btn-secondary" type="button" (click)="editingId ? backToList() : backToCategory()">Cancel</button>
+      <button class="btn btn-primary" type="button" [disabled]="saving" (click)="save()">
+        {{ saving ? 'Saving...' : (editingId ? 'Save Changes' : 'Save Record') }}
+      </button>
+    </div>
+  </div>
+}

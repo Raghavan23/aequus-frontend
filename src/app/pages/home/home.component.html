@@ -1,0 +1,429 @@
+<div class="dashboard-grid">
+  
+  <!-- ============================================================ -->
+  <!-- TOP ROW: REVENUE CHART + CALENDAR WIDGET                     -->
+  <!-- ============================================================ -->
+  
+  <div class="top-row">
+    <!-- Card 1: Revenue Chart Card -->
+    <section class="card revenue-card">
+      <div class="card-header">
+        <div class="metric-block">
+          <span class="card-label">Revenue</span>
+          <div class="metric-value-row">
+            <span class="metric-amount">$ 28,165</span>
+            <span class="badge-growth positive">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12,4 22,20 2,20"></polygon>
+              </svg>
+              8.3%
+            </span>
+            <span class="metric-comparison">vs 24,280 last period</span>
+          </div>
+        </div>
+
+        <div class="timeframe-controls">
+          <div class="toggle-group">
+            <button 
+              type="button" 
+              class="toggle-btn" 
+              [class.active]="selectedPeriod === 'Weekly'"
+              (click)="selectPeriod('Weekly')">Weekly</button>
+            <button 
+              type="button" 
+              class="toggle-btn" 
+              [class.active]="selectedPeriod === 'Monthly'"
+              (click)="selectPeriod('Monthly')">Monthly</button>
+            <button 
+              type="button" 
+              class="toggle-btn" 
+              [class.active]="selectedPeriod === 'Yearly'"
+              (click)="selectPeriod('Yearly')">Yearly</button>
+            <button 
+              type="button" 
+              class="toggle-btn" 
+              [class.active]="selectedPeriod === 'Range'"
+              (click)="selectPeriod('Range')">Range</button>
+          </div>
+
+          <button type="button" class="icon-control-btn" title="Filters">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line>
+              <line x1="20" y1="12" x2="20" y2="3"></line>
+              <line x1="1" y1="14" x2="7" y2="14"></line>
+              <line x1="9" y1="8" x2="15" y2="8"></line>
+              <line x1="17" y1="16" x2="23" y2="16"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bar Chart Section -->
+      <div class="chart-container">
+        <!-- Y-Axis Labels -->
+        <div class="y-axis">
+          <span>6000</span>
+          <span>4500</span>
+          <span>3000</span>
+          <span>1500</span>
+          <span>0</span>
+        </div>
+
+        <!-- Bars Area -->
+        <div class="bars-wrapper">
+          <!-- Background Grid Lines -->
+          <div class="grid-lines">
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+            <div class="grid-line"></div>
+          </div>
+
+          <!-- Monthly Bars -->
+          <div class="bars-container">
+            <div 
+              *ngFor="let item of monthsData; let idx = index" 
+              class="bar-column" 
+              [class.selected]="idx === selectedMonthIndex"
+              (click)="selectMonth(idx)">
+              
+              <!-- Floating Tooltip for Active/Selected month -->
+              <div class="bar-tooltip" *ngIf="idx === selectedMonthIndex">
+                <span class="tooltip-badge">▲ {{ item.growth || '+12%' }}</span>
+              </div>
+
+              <!-- The Bar Graphic -->
+              <div class="bar-track">
+                <div 
+                  class="bar-fill" 
+                  [style.height.%]="item.heightPercent"
+                  [class.active-fill]="idx === selectedMonthIndex">
+                  <!-- Top White Cap Handle -->
+                  <div class="bar-cap"></div>
+                  <!-- Inner sublabel on active bar -->
+                  <div class="bar-sublabel" *ngIf="idx === selectedMonthIndex">
+                    {{ item.sublabel || '$1048' }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Month Label -->
+              <span class="x-label">{{ item.month }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Card 2: Calendar & Mini Stat Widget -->
+    <section class="card calendar-card">
+      <div class="calendar-header">
+        <button type="button" class="cal-nav-btn" title="Previous Month">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <span class="cal-month-title">{{ currentMonthName }}</span>
+        <button type="button" class="cal-nav-btn" title="Next Month">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Calendar Days Grid -->
+      <div class="calendar-grid">
+        <!-- Weekday Headers -->
+        <div class="cal-weekday">M</div>
+        <div class="cal-weekday">T</div>
+        <div class="cal-weekday">W</div>
+        <div class="cal-weekday">T</div>
+        <div class="cal-weekday">F</div>
+        <div class="cal-weekday">S</div>
+        <div class="cal-weekday">S</div>
+
+        <!-- Date Cells -->
+        <div 
+          *ngFor="let d of calendarDays" 
+          class="cal-cell"
+          [class.hatched]="d.isHatched"
+          [class.selected]="d.isSelected"
+          (click)="selectCalendarDay(d)">
+          <span *ngIf="d.day">{{ d.day }}</span>
+        </div>
+      </div>
+
+      <!-- Mini Stat Banner -->
+      <div class="cal-stat-banner">
+        <div class="stat-icon-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
+        <span class="stat-amount">$1,434</span>
+        <span class="stat-growth-badge">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12,4 22,20 2,20"></polygon>
+          </svg>
+          12.4%
+        </span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- BOTTOM ROW: AI ASSISTANT + SPENDING DONUT + INVOICES LIST    -->
+  <!-- ============================================================ -->
+  
+  <div class="bottom-row">
+    
+    <!-- Card 3: AI Assistant Card -->
+    <section class="card ai-card">
+      <div class="card-header">
+        <div class="ai-title-wrap">
+          <div class="ai-sparkle-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="url(#sparkleGradient)"/>
+              <defs>
+                <linearGradient id="sparkleGradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#60a5fa"/>
+                  <stop offset="1" stop-color="#a855f7"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="ai-title">How can I help you?</span>
+        </div>
+        <button type="button" class="icon-expand-btn" title="Expand View">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- AI Summary Content -->
+      <div class="ai-summary-block">
+        <span class="ai-summary-label">AI Summary</span>
+        <p class="ai-summary-text">
+          Your financial activity this period remains stable. Revenue shows expected seasonal variation, spending is balanced across key categories. No unusual patterns det...
+          <button type="button" class="read-more-link">Read more</button>
+        </p>
+      </div>
+
+      <!-- AI Metric Badges -->
+      <div class="ai-stats-row">
+        <div class="ai-stat-box">
+          <span class="stat-sublabel">Spending Trends</span>
+          <div class="stat-num-row">
+            <span class="stat-bold-num">7</span>
+            <span class="pill-badge pill-amber">Stable</span>
+          </div>
+        </div>
+
+        <div class="ai-stat-box">
+          <span class="stat-sublabel">Customer Payments</span>
+          <div class="stat-num-row">
+            <span class="stat-bold-num">25</span>
+            <span class="pill-badge pill-green">Processed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Interactive Prompt Input -->
+      <div class="ai-prompt-bar">
+        <input 
+          type="text" 
+          [(ngModel)]="aiPrompt" 
+          placeholder="Ask me anything..." 
+          (keyup.enter)="sendAiQuery()"
+          class="ai-input" />
+        <button type="button" class="ai-send-btn" (click)="sendAiQuery()" title="Send">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+      <div class="ai-toast" *ngIf="aiResponse">{{ aiResponse }}</div>
+    </section>
+
+    <!-- Card 4: Spending Donut Breakdown Card -->
+    <section class="card spending-card">
+      <div class="card-header">
+        <span class="card-title">Spending</span>
+        <div class="dropdown-pill">
+          <span>{{ selectedSpendingTimeframe }}</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <div class="spending-body">
+        <!-- SVG Donut Chart with Hover Segment -->
+        <div class="donut-chart-container">
+          <!-- Floating Tooltip on active hover segment -->
+          <div class="donut-tooltip" *ngIf="hoveredCategory">
+            <span class="donut-tooltip-dot" [style.background-color]="hoveredCategory.color"></span>
+            <span>${{ hoveredCategory.amount }} ({{ hoveredCategory.percent }}%)</span>
+          </div>
+
+          <svg class="donut-svg" viewBox="0 0 160 160">
+            <!-- Background Ring -->
+            <circle cx="80" cy="80" r="58" fill="none" stroke="#232733" stroke-width="16" />
+
+            <!-- Segment 1: Activity (Orange) -->
+            <circle 
+              cx="80" cy="80" r="58" fill="none" 
+              stroke="#f97316" stroke-width="16" 
+              stroke-dasharray="102 262" 
+              stroke-dashoffset="0"
+              (mouseenter)="setHoveredCategory(categories[0])"
+              class="donut-segment" />
+
+            <!-- Segment 2: Meals (Green) -->
+            <circle 
+              cx="80" cy="80" r="58" fill="none" 
+              stroke="#22c55e" stroke-width="16" 
+              stroke-dasharray="87 277" 
+              stroke-dashoffset="-105"
+              (mouseenter)="setHoveredCategory(categories[1])"
+              class="donut-segment" />
+
+            <!-- Segment 3: Rewards (Cyan) -->
+            <circle 
+              cx="80" cy="80" r="58" fill="none" 
+              stroke="#38bdf8" stroke-width="16" 
+              stroke-dasharray="58 306" 
+              stroke-dashoffset="-194"
+              (mouseenter)="setHoveredCategory(categories[3])"
+              class="donut-segment" />
+
+            <!-- Segment 4: Internet&Telephone (Purple) -->
+            <circle 
+              cx="80" cy="80" r="58" fill="none" 
+              stroke="#a855f7" stroke-width="17" 
+              stroke-dasharray="58 306" 
+              stroke-dashoffset="-254"
+              (mouseenter)="setHoveredCategory(categories[4])"
+              class="donut-segment active-segment" />
+
+            <!-- Segment 5: Other / Office (Dark Grey) -->
+            <circle 
+              cx="80" cy="80" r="58" fill="none" 
+              stroke="#334155" stroke-width="16" 
+              stroke-dasharray="52 312" 
+              stroke-dashoffset="-314"
+              (mouseenter)="setHoveredCategory(categories[2])"
+              class="donut-segment" />
+          </svg>
+
+          <!-- Donut Center Label -->
+          <div class="donut-center-label">
+            <span class="donut-center-amount">$28,165</span>
+            <span class="donut-center-sub">Total</span>
+          </div>
+        </div>
+
+        <!-- Legend List -->
+        <div class="spending-legend">
+          <div 
+            *ngFor="let cat of categories" 
+            class="legend-item"
+            (mouseenter)="setHoveredCategory(cat)">
+            <span class="legend-dot" [style.background-color]="cat.color"></span>
+            <span class="legend-text">{{ cat.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Note -->
+      <div class="spending-footer-note">
+        <svg class="info-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>Most expenses come from Activity and Meals, while Internet&Telephone shows a slight increase.</span>
+      </div>
+    </section>
+
+    <!-- Card 5: Invoices & Payment Score Card -->
+    <section class="card invoices-card">
+      <div class="card-header">
+        <span class="card-title">Invoices</span>
+        <button type="button" class="btn-add-invoice" (click)="navigateToAddInvoice()" title="Add Invoice">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Payment Score LED Bar -->
+      <div class="payment-score-section">
+        <span class="score-label">Payment Score</span>
+        <div class="ticks-bar">
+          <div 
+            *ngFor="let t of scoreTicks; let i = index" 
+            class="score-tick"
+            [class.active]="i < activeTicksCount"
+            [style.--tick-index]="i">
+          </div>
+        </div>
+        <span class="score-number">76</span>
+      </div>
+
+      <!-- Invoices List -->
+      <div class="invoices-list">
+        <div *ngFor="let inv of invoices" class="invoice-row">
+          <div class="inv-date-col">
+            <span class="inv-date">{{ inv.date }}</span>
+            <span class="inv-due">{{ inv.dueLabel }}</span>
+          </div>
+
+          <div class="inv-status-col">
+            <span 
+              class="status-pill"
+              [class.status-unpaid]="inv.status === 'Unpaid'"
+              [class.status-paid]="inv.status === 'Paid'"
+              [class.status-pending]="inv.status === 'Pending'">
+              <span class="status-dot"></span>
+              {{ inv.status }}
+            </span>
+          </div>
+
+          <div class="inv-customer-col">
+            <span class="customer-name">{{ inv.customer }}</span>
+          </div>
+
+          <div class="inv-amount-col">
+            <span class="inv-amount">${{ inv.amount.toFixed(2) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Link -->
+      <div class="invoices-footer">
+        <a routerLink="/financial-records" class="view-all-link">
+          View all invoices
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line>
+            <polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</div>

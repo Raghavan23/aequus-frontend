@@ -1,0 +1,50 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <h1>Finz V1</h1>
+    <p class="subtitle">Create an account to get started.</p>
+
+    @if (errorMessage) {
+      <div class="alert-error">{{ errorMessage }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="form-field">
+        <label for="name">Name</label>
+        <input id="name" type="text" formControlName="name" placeholder="John Doe" />
+        @if (name.touched && name.invalid) {
+          <span class="field-error">Name is required.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="john@example.com" />
+        @if (email.touched && email.invalid) {
+          <span class="field-error">Enter a valid email address.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" placeholder="••••••••" />
+        @if (password.touched && password.invalid) {
+          <span class="field-error">Password must be at least 8 characters.</span>
+        }
+      </div>
+
+      <div class="form-field">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••" />
+        @if (confirmPassword.touched && form.errors?.['passwordsMismatch']) {
+          <span class="field-error">Passwords do not match.</span>
+        }
+      </div>
+
+      <button class="btn btn-primary btn-block" type="submit" [disabled]="loading">
+        {{ loading ? 'Creating account...' : 'Create Account' }}
+      </button>
+    </form>
+
+    <p class="switch-auth">Already have an account? <a routerLink="/login">Login</a></p>
+  </div>
+</div>
