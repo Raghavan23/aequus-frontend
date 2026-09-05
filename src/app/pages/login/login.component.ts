@@ -1,9 +1,10 @@
-﻿import { Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthService } from '../../services/auth.service';
+import { AEQUUS_LOGO } from '../../constants/brand';
 
 @Component({
   selector: 'finz-login',
@@ -13,6 +14,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  readonly logo = AEQUUS_LOGO;
   private fb = inject(FormBuilder);
   loading = false;
   errorMessage: string | null = null;

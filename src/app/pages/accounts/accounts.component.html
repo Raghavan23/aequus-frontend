@@ -1,0 +1,361 @@
+<div class="accounts-page">
+  <!-- Top Header Bar -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="title-group">
+        <div class="title-badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+        </div>
+        <div>
+          <h1>Financial Accounts</h1>
+          <p class="subtitle">Manage savings, current, and salary accounts</p>
+        </div>
+      </div>
+
+      <button class="btn-primary" (click)="openCreateModal()" id="btn-add-account">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>Add Account</span>
+      </button>
+    </div>
+
+    @if (errorMessage) {
+      <div class="alert-error">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+  </header>
+
+  <!-- Summary Metric Cards -->
+  <section class="summary-grid" *ngIf="summary">
+    <div class="metric-card net-worth-card">
+      <div class="metric-header">
+        <span class="metric-label">Total Balance / Net Worth</span>
+        <div class="metric-icon-wrap bg-blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div class="metric-value" [ngClass]="netWorthClass">
+        {{ summary.netWorth >= 0 ? '₹' : '-₹' }}{{ (summary.netWorth >= 0 ? summary.netWorth : -summary.netWorth) | number:'1.2-2' }}
+      </div>
+      <div class="metric-footer">
+        <span class="metric-subtext">Across {{ summary.activeAccountsCount }} active accounts</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-label">Total Assets</span>
+        <div class="metric-icon-wrap bg-emerald">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+        </div>
+      </div>
+      <div class="metric-value text-emerald">
+        ₹{{ summary.totalAssets | number:'1.2-2' }}
+      </div>
+      <div class="metric-footer">
+        <span class="metric-subtext">Savings, current & salary accounts</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-header">
+        <span class="metric-label">Active Accounts</span>
+        <div class="metric-icon-wrap bg-blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+        </div>
+      </div>
+      <div class="metric-value">
+        {{ summary.activeAccountsCount }}
+      </div>
+      <div class="metric-footer">
+        <span class="metric-subtext">Connected accounts</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Navigation Tabs -->
+  <div class="filters-bar">
+    <div class="filter-tabs">
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="selectedFilter === 'ALL'"
+        (click)="setFilter('ALL')"
+      >
+        All Accounts ({{ accounts.length }})
+      </button>
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="selectedFilter === 'SAVINGS'"
+        (click)="setFilter('SAVINGS')"
+      >
+        Savings ({{ getAccountCountByType('SAVINGS') }})
+      </button>
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="selectedFilter === 'CURRENT'"
+        (click)="setFilter('CURRENT')"
+      >
+        Current ({{ getAccountCountByType('CURRENT') }})
+      </button>
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="selectedFilter === 'SALARY'"
+        (click)="setFilter('SALARY')"
+      >
+        Salary ({{ getAccountCountByType('SALARY') }})
+      </button>
+    </div>
+  </div>
+
+  <!-- Accounts Card Grid -->
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading accounts...</p>
+    </div>
+  } @else if (filteredAccounts.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon-wrap">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+          <line x1="2" y1="10" x2="22" y2="10"></line>
+        </svg>
+      </div>
+      <h3>No accounts found</h3>
+      <p>Add your savings, current, or salary accounts to track balances and transactions in real-time.</p>
+      <button class="btn-primary" (click)="openCreateModal()">Create Your First Account</button>
+    </div>
+  } @else {
+    <div class="accounts-grid">
+      @for (acc of filteredAccounts; track acc.id) {
+        <div class="account-card" [style.--acc-color]="acc.color">
+          <div class="card-accent-bar" [style.background]="acc.color"></div>
+          
+          <div class="card-top">
+            <div class="card-brand">
+              <div class="acc-avatar" [style.background]="acc.color + '22'" [style.color]="acc.color">
+                @if (acc.type === 'SAVINGS') {
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h1l1-3c0-1.5-1.5-2.5-3-3l-.5-.5c-.2-.6-.5-1-1.5-1z"></path>
+                    <circle cx="16" cy="11" r="1"></circle>
+                  </svg>
+                } @else if (acc.type === 'CURRENT') {
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                  </svg>
+                } @else {
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                  </svg>
+                }
+              </div>
+              <div class="acc-meta">
+                <h3 class="acc-name">{{ acc.name }}</h3>
+                <span class="institution-name">{{ acc.institutionName || 'Self-Managed Account' }}</span>
+              </div>
+            </div>
+
+            <div class="card-actions">
+              <button class="action-icon-btn" (click)="openEditModal(acc)" title="Edit Account">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
+              <button class="action-icon-btn text-danger" (click)="confirmDelete(acc)" title="Delete Account">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="card-middle">
+            <div class="balance-wrap">
+              <span class="balance-label">Current Balance</span>
+              <div class="balance-amount">
+                ₹{{ acc.balance | number:'1.2-2' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="card-bottom">
+            <span class="type-badge" [ngClass]="getTypeBadgeClass(acc.type)">
+              {{ acc.type === 'SAVINGS' ? 'Savings' : acc.type === 'CURRENT' ? 'Current' : 'Salary' }}
+            </span>
+            @if (acc.accountNumberMask) {
+              <span class="mask-badge">{{ acc.accountNumberMask }}</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Add / Edit Modal -->
+  @if (showModal) {
+    <div class="modal-backdrop" (click)="closeModal()">
+      <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>{{ isEditing ? 'Edit Account' : 'Create New Account' }}</h2>
+          <button type="button" class="close-btn" (click)="closeModal()">&times;</button>
+        </div>
+
+        <form [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+          <div class="modal-body">
+            <!-- Account Name -->
+            <div class="form-field">
+              <label for="acc-name">Account Name *</label>
+              <input
+                id="acc-name"
+                type="text"
+                formControlName="name"
+                placeholder="e.g. Chase Total Checking"
+              />
+              @if (accountForm.get('name')?.touched && accountForm.get('name')?.invalid) {
+                <span class="field-error">Account name is required.</span>
+              }
+            </div>
+
+            <!-- Account Type Selector Grid -->
+            <div class="form-field">
+              <label>Account Type *</label>
+              <div class="type-selection-grid">
+                @for (t of accountTypes; track t.value) {
+                  <label
+                    class="type-radio-card"
+                    [class.selected]="accountForm.get('type')?.value === t.value"
+                    (click)="selectType(t.value)"
+                  >
+                    <input type="radio" formControlName="type" [value]="t.value" class="sr-only" />
+                    <span class="type-radio-title">{{ t.label }}</span>
+                    <span class="type-radio-desc">{{ t.desc }}</span>
+                  </label>
+                }
+              </div>
+            </div>
+
+            <!-- Institution & Masked Number Row -->
+            <div class="form-row">
+              <div class="form-field">
+                <label for="acc-institution">Institution / Bank</label>
+                <input
+                  id="acc-institution"
+                  type="text"
+                  formControlName="institutionName"
+                  placeholder="e.g. Chase, Robinhood"
+                />
+              </div>
+
+              <div class="form-field">
+                <label for="acc-mask">Account / Card Mask</label>
+                <input
+                  id="acc-mask"
+                  type="text"
+                  formControlName="accountNumberMask"
+                  placeholder="e.g. •••• 4242"
+                  maxlength="10"
+                />
+              </div>
+            </div>
+
+            <!-- Initial Balance -->
+            <div class="form-field">
+              <label for="acc-balance">
+                {{ isEditing ? 'Adjusted Balance (₹)' : 'Initial Balance (₹)' }} *
+              </label>
+              <input
+                id="acc-balance"
+                type="number"
+                step="0.01"
+                formControlName="balance"
+                placeholder="0.00"
+              />
+              @if (accountForm.get('balance')?.touched && accountForm.get('balance')?.invalid) {
+                <span class="field-error">Balance is required.</span>
+              }
+            </div>
+
+            <!-- Color Palette Preset -->
+            <div class="form-field">
+              <label>Accent Color</label>
+              <div class="color-palette">
+                @for (c of colorPresets; track c) {
+                  <button
+                    type="button"
+                    class="color-dot"
+                    [style.background]="c"
+                    [class.active]="accountForm.get('color')?.value === c"
+                    (click)="selectColor(c)"
+                  ></button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="saving">
+              @if (saving) {
+                <div class="spinner-sm"></div>
+                <span>Saving...</span>
+              } @else {
+                <span>{{ isEditing ? 'Save Changes' : 'Create Account' }}</span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- Delete Confirmation Modal -->
+  @if (deletingAccount) {
+    <div class="modal-backdrop" (click)="cancelDelete()">
+      <div class="modal-dialog modal-sm" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Delete Account</h2>
+          <button type="button" class="close-btn" (click)="cancelDelete()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete <strong>{{ deletingAccount.name }}</strong>?
+            Any financial records linked to this account will remain saved with no account attached.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="cancelDelete()">Cancel</button>
+          <button type="button" class="btn-danger" (click)="executeDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

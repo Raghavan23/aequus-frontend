@@ -1,10 +1,11 @@
 .aequus-app-shell {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
   background-color: var(--bg-app);
   color: var(--text-primary);
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 // Slim Sidebar Rail
@@ -16,11 +17,11 @@
   flex-direction: column;
   align-items: center;
   padding: 24px 0;
-  position: sticky;
-  top: 0;
   height: 100vh;
   flex-shrink: 0;
   z-index: 100;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   .brand-logo {
     display: flex;
@@ -34,6 +35,13 @@
 
     &:hover {
       transform: scale(1.08);
+    }
+
+    .brand-logo-img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border-radius: 8px;
     }
   }
 
@@ -95,6 +103,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
   min-width: 0;
   background-color: var(--bg-app);
 }
@@ -102,14 +113,13 @@
 // Header
 .app-header {
   height: 80px;
+  flex-shrink: 0;
   padding: 0 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-subtle);
   background-color: var(--bg-app);
-  position: sticky;
-  top: 0;
   z-index: 90;
 
   .header-left {
@@ -301,6 +311,8 @@
 // Content
 .app-main-content {
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 24px 32px 40px;
 }
 

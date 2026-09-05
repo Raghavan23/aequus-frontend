@@ -1,10 +1,11 @@
-﻿import { Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { AuthService } from '../../services/auth.service';
 import { passwordsMatchValidator } from '../../validators/form.validators';
+import { AEQUUS_LOGO } from '../../constants/brand';
 
 @Component({
   selector: 'finz-register',
@@ -14,6 +15,7 @@ import { passwordsMatchValidator } from '../../validators/form.validators';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+  readonly logo = AEQUUS_LOGO;
   private fb = inject(FormBuilder);
   loading = false;
   errorMessage: string | null = null;

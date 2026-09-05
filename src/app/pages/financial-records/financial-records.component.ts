@@ -13,6 +13,9 @@ import {
   categoryLabel
 } from '../../enums/financial-category.enum';
 
+import { AccountService } from '../../services/account.service';
+import { Account } from '../../models/account.model';
+
 type ViewMode = 'list' | 'choose-type' | 'choose-category' | 'enter-amount';
 
 @Component({
@@ -26,6 +29,7 @@ export class FinancialRecordsComponent implements OnInit {
   readonly FinancialType = FinancialType;
 
   records: FinancialRecord[] = [];
+  accounts: Account[] = [];
   loading = true;
   errorMessage: string | null = null;
 
@@ -36,11 +40,15 @@ export class FinancialRecordsComponent implements OnInit {
   draftType: FinancialType | null = null;
   draftCategory: FinancialCategory | null = null;
   draftAmount: number | null = null;
+  draftAccountId: string | null = null;
 
   saving = false;
   deletingId: string | null = null;
 
-  constructor(private financialRecordService: FinancialRecordService) {}
+  constructor(
+    private financialRecordService: FinancialRecordService,
+    private accountService: AccountService
+  ) {}
 
   ngOnInit(): void {
     this.loadRecords();
@@ -57,6 +65,13 @@ export class FinancialRecordsComponent implements OnInit {
         this.errorMessage = 'Could not load your financial records.';
         this.loading = false;
       }
+    });
+
+    this.accountService.getAccounts().subscribe({
+      next: (accounts) => {
+        this.accounts = accounts;
+      },
+      error: () => {}
     });
   }
 
@@ -75,6 +90,7 @@ export class FinancialRecordsComponent implements OnInit {
     this.draftType = null;
     this.draftCategory = null;
     this.draftAmount = null;
+    this.draftAccountId = null;
     this.errorMessage = null;
     this.mode = 'choose-type';
   }
@@ -110,6 +126,7 @@ export class FinancialRecordsComponent implements OnInit {
     this.draftType = record.type;
     this.draftCategory = record.category;
     this.draftAmount = record.amount;
+    this.draftAccountId = record.accountId ?? null;
     this.errorMessage = null;
     this.mode = 'enter-amount';
   }
@@ -123,6 +140,7 @@ export class FinancialRecordsComponent implements OnInit {
     }
 
     const request: FinancialRecordRequest = {
+      accountId: this.draftAccountId,
       type: this.draftType,
       category: this.draftCategory,
       amount: this.draftAmount

@@ -21,6 +21,11 @@ export const routes: Routes = [
             (m) => m.FinancialRecordsComponent
           )
       },
+      {
+        path: 'accounts',
+        loadComponent: () =>
+          import('./pages/accounts/accounts.component').then((m) => m.AccountsComponent)
+      },
       { path: '', pathMatch: 'full', redirectTo: 'home' }
     ]
   },

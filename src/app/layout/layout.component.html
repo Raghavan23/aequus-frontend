@@ -3,10 +3,7 @@
   <aside class="sidebar-rail">
     <!-- Brand Logo -->
     <a routerLink="/home" class="brand-logo" title="Aequus Dashboard">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L15 8L21 11L15 14L12 20L9 14L3 11L9 8L12 2Z" fill="#FFFFFF"/>
-        <circle cx="12" cy="11" r="2" fill="#0c0d12"/>
-      </svg>
+      <img src="images/logos/aequus-logo.png" alt="Aequus" class="brand-logo-img" />
     </a>
 
     <!-- Navigation Icon Links -->
@@ -14,6 +11,13 @@
       <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item" title="Overview">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
           <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </a>
+
+      <a routerLink="/accounts" routerLinkActive="active" class="nav-item" title="Accounts & Vaults">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+          <line x1="2" y1="10" x2="22" y2="10"></line>
         </svg>
       </a>
 
@@ -118,6 +122,7 @@
 
           <!-- Dropdown menu -->
           <div class="user-menu-dropdown" *ngIf="showUserMenu">
+            <a routerLink="/accounts" class="menu-item">Accounts & Vaults</a>
             <a routerLink="/financial-records" class="menu-item">Financial Records</a>
             <div class="menu-divider"></div>
             <button type="button" class="menu-item text-danger" (click)="logout()">Sign Out</button>

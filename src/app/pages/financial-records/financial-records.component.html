@@ -27,6 +27,7 @@
         <thead>
           <tr>
             <th>Category</th>
+            <th>Account</th>
             <th>Type</th>
             <th>Amount</th>
             <th class="actions-col">Actions</th>
@@ -36,6 +37,11 @@
           @for (record of records; track record.id) {
             <tr (click)="startEdit(record)">
               <td>{{ categoryLabel(record.category) }}</td>
+              <td>
+                <span class="acc-pill" [class.unassigned]="!record.accountName">
+                  {{ record.accountName || 'Unassigned' }}
+                </span>
+              </td>
               <td>
                 <span class="badge" [class.badge-income]="record.type === FinancialType.INCOME"
                       [class.badge-expense]="record.type === FinancialType.EXPENSE">
@@ -115,6 +121,16 @@
     }
 
     <span class="category-chip">{{ draftCategory ? categoryLabel(draftCategory) : '' }}</span>
+
+    <div class="account-selector-row">
+      <label for="record-account">Linked Account (Optional):</label>
+      <select id="record-account" [(ngModel)]="draftAccountId" class="account-select">
+        <option [ngValue]="null">-- No account linked --</option>
+        @for (acc of accounts; track acc.id) {
+          <option [ngValue]="acc.id">{{ acc.name }} ({{ acc.type.replace('_', ' ') }} - ₹{{ acc.balance | number:'1.2-2' }})</option>
+        }
+      </select>
+    </div>
 
     <div class="amount-input-row">
       <span class="currency">₹</span>
