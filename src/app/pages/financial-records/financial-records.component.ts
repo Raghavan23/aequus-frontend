@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { FinancialRecordService } from '../../services/financial-record.service';
 import { FinancialRecord, FinancialRecordRequest } from '../../models/financial-record.model';
@@ -16,46 +17,63 @@ import {
 import { AccountService } from '../../services/account.service';
 import { Account } from '../../models/account.model';
 
-type ViewMode = 'list' | 'choose-type' | 'choose-category' | 'enter-amount';
-
 @Component({
   selector: 'aequus-financial-records',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './financial-records.component.html',
   styleUrl: './financial-records.component.scss'
 })
 export class FinancialRecordsComponent implements OnInit {
+  private financialRecordService = inject(FinancialRecordService);
+  private accountService = inject(AccountService);
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+
   readonly FinancialType = FinancialType;
+  readonly FinancialCategory = FinancialCategory;
 
   records: FinancialRecord[] = [];
   accounts: Account[] = [];
   loading = true;
+  saving = false;
   errorMessage: string | null = null;
 
-  mode: ViewMode = 'list';
+  // Filter state
+  selectedTypeFilter: 'ALL' | FinancialType = 'ALL';
+  selectedAccountFilter: string = 'ALL';
 
-  // Draft state while walking through the add/edit flow
+  // Modal state
+  showModal = false;
+  isEditing = false;
   editingId: string | null = null;
-  draftType: FinancialType | null = null;
-  draftCategory: FinancialCategory | null = null;
-  draftAmount: number | null = null;
-  draftAccountId: string | null = null;
+  deletingRecord: FinancialRecord | null = null;
 
-  saving = false;
-  deletingId: string | null = null;
-
-  constructor(
-    private financialRecordService: FinancialRecordService,
-    private accountService: AccountService
-  ) {}
+  recordForm: FormGroup = this.fb.group({
+    type: [FinancialType.EXPENSE, [Validators.required]],
+    category: [FinancialCategory.FOOD, [Validators.required]],
+    accountId: ['', [Validators.required]],
+    amount: [null, [Validators.required, Validators.min(0.01)]]
+  });
 
   ngOnInit(): void {
-    this.loadRecords();
+    this.loadData();
+    this.checkQueryParams();
   }
 
-  loadRecords(): void {
+  private checkQueryParams(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params['action'] === 'add') {
+        const accId = params['accountId'] || null;
+        this.openCreateModal(accId);
+      }
+    });
+  }
+
+  loadData(): void {
     this.loading = true;
+    this.errorMessage = null;
+
     this.financialRecordService.getAll().subscribe({
       next: (records) => {
         this.records = records;
@@ -75,133 +93,148 @@ export class FinancialRecordsComponent implements OnInit {
     });
   }
 
-  get categoryOptions(): CategoryOption[] {
-    return this.draftType === FinancialType.INCOME ? INCOME_CATEGORY_OPTIONS : EXPENSE_CATEGORY_OPTIONS;
+  get filteredRecords(): FinancialRecord[] {
+    return this.records.filter((rec) => {
+      const matchesType = this.selectedTypeFilter === 'ALL' || rec.type === this.selectedTypeFilter;
+      const matchesAccount =
+        this.selectedAccountFilter === 'ALL' || rec.accountId === this.selectedAccountFilter;
+      return matchesType && matchesAccount;
+    });
+  }
+
+  get totalIncome(): number {
+    return this.records
+      .filter((r) => r.type === FinancialType.INCOME)
+      .reduce((sum, r) => sum + Number(r.amount), 0);
+  }
+
+  get totalExpense(): number {
+    return this.records
+      .filter((r) => r.type === FinancialType.EXPENSE)
+      .reduce((sum, r) => sum + Number(r.amount), 0);
+  }
+
+  get netCashFlow(): number {
+    return this.totalIncome - this.totalExpense;
+  }
+
+  get currentCategoryOptions(): CategoryOption[] {
+    const currentType = this.recordForm.get('type')?.value;
+    return currentType === FinancialType.INCOME ? INCOME_CATEGORY_OPTIONS : EXPENSE_CATEGORY_OPTIONS;
   }
 
   categoryLabel(category: FinancialCategory): string {
     return categoryLabel(category);
   }
 
-  // -------------------- Add flow --------------------
-
-  startAdd(): void {
+  openCreateModal(preselectedAccountId: string | null = null): void {
+    this.isEditing = false;
     this.editingId = null;
-    this.draftType = null;
-    this.draftCategory = null;
-    this.draftAmount = null;
-    this.draftAccountId = null;
-    this.errorMessage = null;
-    this.mode = 'choose-type';
+    const defaultAccId = preselectedAccountId || (this.accounts.length > 0 ? this.accounts[0].id : '');
+    this.recordForm.reset({
+      type: FinancialType.EXPENSE,
+      category: FinancialCategory.FOOD,
+      accountId: defaultAccId,
+      amount: null
+    });
+    this.showModal = true;
   }
 
-  chooseType(type: FinancialType): void {
-    this.draftType = type;
-    this.draftCategory = null;
-    this.mode = 'choose-category';
-  }
-
-  chooseCategory(category: FinancialCategory): void {
-    this.draftCategory = category;
-    this.mode = 'enter-amount';
-  }
-
-  backToList(): void {
-    this.mode = 'list';
-    this.editingId = null;
-  }
-
-  backToType(): void {
-    this.mode = 'choose-type';
-  }
-
-  backToCategory(): void {
-    this.mode = 'choose-category';
-  }
-
-  // -------------------- Edit flow --------------------
-
-  startEdit(record: FinancialRecord): void {
+  openEditModal(record: FinancialRecord): void {
+    this.isEditing = true;
     this.editingId = record.id;
-    this.draftType = record.type;
-    this.draftCategory = record.category;
-    this.draftAmount = record.amount;
-    this.draftAccountId = record.accountId ?? null;
-    this.errorMessage = null;
-    this.mode = 'enter-amount';
+    this.recordForm.patchValue({
+      type: record.type,
+      category: record.category,
+      accountId: record.accountId,
+      amount: record.amount
+    });
+    this.showModal = true;
   }
 
-  // -------------------- Save / Delete --------------------
+  closeModal(): void {
+    this.showModal = false;
+    this.editingId = null;
+  }
 
-  save(): void {
-    if (!this.draftType || !this.draftCategory || !this.draftAmount || this.draftAmount <= 0) {
-      this.errorMessage = 'Please enter a valid amount.';
+  setType(type: FinancialType): void {
+    this.recordForm.patchValue({
+      type,
+      category: type === FinancialType.INCOME ? FinancialCategory.ACTIVE_INCOME : FinancialCategory.FOOD
+    });
+  }
+
+  setCategory(category: FinancialCategory): void {
+    this.recordForm.patchValue({ category });
+  }
+
+  saveRecord(): void {
+    if (this.accounts.length === 0) {
+      this.errorMessage = 'Please create an account first before adding transactions.';
       return;
     }
 
-    const request: FinancialRecordRequest = {
-      accountId: this.draftAccountId,
-      type: this.draftType,
-      category: this.draftCategory,
-      amount: this.draftAmount
-    };
+    if (this.recordForm.invalid) {
+      this.recordForm.markAllAsTouched();
+      return;
+    }
 
     this.saving = true;
-    this.errorMessage = null;
+    const val = this.recordForm.value;
+    const request: FinancialRecordRequest = {
+      type: val.type,
+      category: val.category,
+      accountId: val.accountId,
+      amount: Number(val.amount)
+    };
 
-    const request$ = this.editingId
-      ? this.financialRecordService.update(this.editingId, request)
-      : this.financialRecordService.create(request);
-
-    request$.subscribe({
-      next: () => {
-        this.saving = false;
-        this.mode = 'list';
-        this.editingId = null;
-        this.loadRecords();
-      },
-      error: () => {
-        this.saving = false;
-        this.errorMessage = 'Could not save this record. Please try again.';
-      }
-    });
+    if (this.isEditing && this.editingId) {
+      this.financialRecordService.update(this.editingId, request).subscribe({
+        next: () => {
+          this.saving = false;
+          this.closeModal();
+          this.loadData();
+        },
+        error: (err) => {
+          this.saving = false;
+          this.errorMessage = err.error?.message ?? 'Failed to update transaction.';
+        }
+      });
+    } else {
+      this.financialRecordService.create(request).subscribe({
+        next: () => {
+          this.saving = false;
+          this.closeModal();
+          this.loadData();
+        },
+        error: (err) => {
+          this.saving = false;
+          this.errorMessage = err.error?.message ?? 'Failed to create transaction.';
+        }
+      });
+    }
   }
 
-  delete(record: FinancialRecord, event: Event): void {
-    event.stopPropagation();
-    if (!confirm('Delete this record? This cannot be undone.')) {
-      return;
-    }
-
-    this.deletingId = record.id;
-    this.financialRecordService.delete(record.id).subscribe({
-      next: () => {
-        this.deletingId = null;
-        this.loadRecords();
-      },
-      error: () => {
-        this.deletingId = null;
-        this.errorMessage = 'Could not delete this record. Please try again.';
-      }
-    });
+  confirmDelete(record: FinancialRecord, event?: Event): void {
+    if (event) event.stopPropagation();
+    this.deletingRecord = record;
   }
 
-  deleteFromEdit(): void {
-    if (!this.editingId) {
-      return;
-    }
-    if (!confirm('Delete this record? This cannot be undone.')) {
-      return;
-    }
+  cancelDelete(): void {
+    this.deletingRecord = null;
+  }
 
-    this.financialRecordService.delete(this.editingId).subscribe({
+  executeDelete(): void {
+    if (!this.deletingRecord) return;
+    const id = this.deletingRecord.id;
+    this.financialRecordService.delete(id).subscribe({
       next: () => {
-        this.mode = 'list';
-        this.editingId = null;
-        this.loadRecords();
+        this.deletingRecord = null;
+        this.loadData();
       },
-      error: () => {
-        this.errorMessage = 'Could not delete this record. Please try again.';
+      error: (err) => {
+        this.errorMessage = err.error?.message ?? 'Failed to delete record.';
+        this.deletingRecord = null;
       }
     });
   }

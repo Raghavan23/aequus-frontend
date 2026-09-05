@@ -214,6 +214,9 @@
             @if (acc.accountNumberMask) {
               <span class="mask-badge">{{ acc.accountNumberMask }}</span>
             }
+            <a [routerLink]="['/financial-records']" [queryParams]="{ action: 'add', accountId: acc.id }" class="quick-record-link" title="Record Transaction to this Account">
+              + Add Record
+            </a>
           </div>
         </div>
       }
@@ -348,7 +351,7 @@
         <div class="modal-body">
           <p>
             Are you sure you want to delete <strong>{{ deletingAccount.name }}</strong>?
-            Any financial records linked to this account will remain saved with no account attached.
+            The account will be archived and retained in your historical records.
           </p>
         </div>
         <div class="modal-footer">

@@ -1,13 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AccountService } from '../../services/account.service';
 import { Account, AccountRequest, AccountSummary, AccountType } from '../../models/account.model';
 
 @Component({
   selector: 'aequus-accounts',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.scss'
 })
@@ -118,7 +119,7 @@ export class AccountsComponent implements OnInit {
       institutionName: account.institutionName ?? '',
       accountNumberMask: account.accountNumberMask ?? '',
       color: account.color ?? '#3b82f6',
-      currency: account.currency ?? 'USD'
+      currency: account.currency ?? 'INR'
     });
     this.showModal = true;
   }
@@ -139,7 +140,7 @@ export class AccountsComponent implements OnInit {
     const request: AccountRequest = {
       name: formVal.name,
       type: formVal.type,
-      balance: formVal.balance,
+      balance: Number(formVal.balance),
       institutionName: formVal.institutionName || undefined,
       accountNumberMask: formVal.accountNumberMask || undefined,
       color: formVal.color,
