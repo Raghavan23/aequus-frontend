@@ -1,8 +1,31 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
+import { rootGuard } from './guards/root.guard';
 
 export const routes: Routes = [
+  // Landing / Pre-login Dashboard page (visitors arriving at aequus.in /)
+  {
+    path: '',
+    pathMatch: 'full',
+    canActivate: [rootGuard],
+    loadComponent: () =>
+      import('./pages/landing/landing.component').then((m) => m.LandingComponent)
+  },
+  {
+    path: 'dashboard',
+    canActivate: [rootGuard],
+    loadComponent: () =>
+      import('./pages/landing/landing.component').then((m) => m.LandingComponent)
+  },
+  {
+    path: 'overview',
+    canActivate: [rootGuard],
+    loadComponent: () =>
+      import('./pages/landing/landing.component').then((m) => m.LandingComponent)
+  },
+
+  // Authenticated Application (home, financial records, accounts)
   {
     path: '',
     loadComponent: () =>
@@ -25,14 +48,16 @@ export const routes: Routes = [
         path: 'accounts',
         loadComponent: () =>
           import('./pages/accounts/accounts.component').then((m) => m.AccountsComponent)
-      },
-      { path: '', pathMatch: 'full', redirectTo: 'home' }
+      }
     ]
   },
+
+  // Auth pages (login, register)
   {
     path: 'login',
     canActivate: [guestGuard],
-    loadComponent: () => import('./pages/login/login.component').then((m) => m.LoginComponent)
+    loadComponent: () =>
+      import('./pages/login/login.component').then((m) => m.LoginComponent)
   },
   {
     path: 'register',
@@ -40,5 +65,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/register/register.component').then((m) => m.RegisterComponent)
   },
-  { path: '**', redirectTo: 'home' }
+
+  // Fallback
+  { path: '**', redirectTo: '' }
 ];
