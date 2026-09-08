@@ -200,7 +200,7 @@
 
               <td>
                 @if (rec.accountName) {
-                  <span class="account-pill">
+                  <span class="account-pill" [class.archived]="rec.accountName.includes('(Archived)')">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                     {{ rec.accountName }}
                   </span>

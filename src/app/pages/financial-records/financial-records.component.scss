@@ -382,6 +382,13 @@
   font-size: 12px;
   font-weight: 500;
 
+  &.archived {
+    background: rgba(148, 163, 184, 0.1);
+    border-color: rgba(148, 163, 184, 0.25);
+    color: #94a3b8;
+    font-style: italic;
+  }
+
   &.unassigned {
     background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.08);
