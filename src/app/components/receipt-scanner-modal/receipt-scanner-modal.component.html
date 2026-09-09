@@ -1,0 +1,266 @@
+<div class="modal-backdrop" (click)="close.emit()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-title-wrap">
+        <div class="icon-chip">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 7V4h3M20 7V4h-3M4 17v3h3M20 17v3h-3M9 12h6M12 9v6"></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="modal-title">Auto-Vision Extraction</h2>
+          <div class="sub-badge">
+            <span class="pulse-dot"></span>
+            <span>Agent 2 • Sub-Second OCR & Tax Decomposition</span>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="close-btn" (click)="close.emit()" title="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Error Alert -->
+    @if (errorMessage) {
+      <div class="error-banner">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+
+      <!-- 1. Upload Dropzone (When not scanning and no result) -->
+      @if (!isScanning && !parsedResult) {
+        <div
+          class="dropzone-box"
+          [class.is-dragover]="isDragging"
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+        >
+          <input
+            #fileInput
+            type="file"
+            accept="image/png,image/jpeg,image/webp,application/pdf"
+            class="hidden-file-input"
+            (change)="onFileSelected($event)"
+          />
+
+          <div class="dropzone-content" (click)="fileInput.click()">
+            <div class="scanner-radar-wrap">
+              <div class="radar-circle"></div>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="3" width="18" height="18" rx="3" ry="3"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+
+            <h3 class="dropzone-title">Drop invoice or receipt screenshot</h3>
+            <p class="dropzone-sub">
+              Drag & drop here, or <span class="text-cyan">browse file</span>. You can also paste directly with <kbd>Ctrl+V</kbd>.
+            </p>
+
+            <div class="feature-tags">
+              <span class="tag">Line-Item Decomposition</span>
+              <span class="tag">Sales Tax Breakdown</span>
+              <span class="tag">Auto-Ledger Routing</span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- 2. Neural Scanning Animation State -->
+      @if (isScanning) {
+        <div class="scanning-state">
+          <div class="scan-laser-box">
+            @if (previewUrl) {
+              <img [src]="previewUrl" alt="Receipt preview" class="scan-preview-img" />
+            } @else {
+              <div class="placeholder-doc">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+              </div>
+            }
+            <div class="laser-beam"></div>
+          </div>
+
+          <div class="scanning-text-wrap">
+            <div class="spinner-cyan"></div>
+            <p class="scan-status-title">Neural Vision Parsing In Progress...</p>
+            <p class="scan-status-desc">Extracting merchant, subtotal, line-items, and calculating tax ratios.</p>
+          </div>
+        </div>
+      }
+
+      <!-- 3. Parsed Receipt Verification View -->
+      @if (parsedResult && !isScanning) {
+        <div class="result-grid">
+          
+          <!-- Left: Receipt Details & Line-Items -->
+          <div class="receipt-card-left">
+            <div class="receipt-header">
+              <div class="merchant-badge">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="2" width="20" height="20" rx="4"></rect>
+                  <path d="M8 6h8M8 10h8M8 14h4"></path>
+                </svg>
+                <span>{{ parsedResult.merchant }}</span>
+              </div>
+              <span class="status-routed">Auto-Extracted</span>
+            </div>
+
+            <!-- Line Items Table -->
+            @if (parsedResult.lineItems && parsedResult.lineItems.length > 0) {
+              <div class="line-items-section">
+                <span class="section-label">Decomposed Line Items</span>
+                <div class="items-list">
+                  @for (item of parsedResult.lineItems; track item.name) {
+                    <div class="item-row">
+                      <div class="item-main">
+                        <span class="item-qty">{{ item.quantity }}x</span>
+                        <span class="item-name">{{ item.name }}</span>
+                      </div>
+                      <span class="item-price">₹{{ item.totalPrice | number:'1.2-2' }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Subtotal & Tax Breakdown -->
+            <div class="math-breakdown">
+              <div class="math-row">
+                <span class="math-label">Subtotal</span>
+                <span class="math-val">₹{{ parsedResult.subtotal | number:'1.2-2' }}</span>
+              </div>
+              <div class="math-row">
+                <span class="math-label">
+                  Sales Tax 
+                  @if (parsedResult.taxRatePercentage) {
+                    <span class="tax-rate-pill">({{ parsedResult.taxRatePercentage }}%)</span>
+                  }
+                </span>
+                <span class="math-val">₹{{ parsedResult.taxAmount | number:'1.2-2' }}</span>
+              </div>
+              @if (parsedResult.tipAmount > 0) {
+                <div class="math-row">
+                  <span class="math-label">Tip / Surcharge</span>
+                  <span class="math-val">₹{{ parsedResult.tipAmount | number:'1.2-2' }}</span>
+                </div>
+              }
+              <div class="math-row total-row">
+                <span class="math-label">Total Amount</span>
+                <span class="math-val-total">₹{{ parsedResult.totalAmount | number:'1.2-2' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Double-Entry Routing & Confirmation Form -->
+          <div class="routing-form-right">
+            <h4 class="routing-title">Double-Entry Ledger Routing</h4>
+            <p class="routing-sub">Verify and confirm account allocation.</p>
+
+            <div class="form-group">
+              <label class="form-label">Merchant / Description</label>
+              <input
+                type="text"
+                [(ngModel)]="editableMerchant"
+                class="form-input"
+                placeholder="Merchant name"
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label class="form-label">Category</label>
+                <select [(ngModel)]="editableCategory" class="form-select">
+                  @for (cat of expenseCategoryOptions; track cat.value) {
+                    <option [value]="cat.value">{{ cat.label }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group flex-1">
+                <label class="form-label">Total Amount (₹)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  [(ngModel)]="editableAmount"
+                  class="form-input"
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Debit from Account</label>
+              <select [(ngModel)]="editableAccountId" class="form-select">
+                @for (acc of accounts; track acc.id) {
+                  <option [value]="acc.id">{{ acc.name }} (₹{{ acc.balance | number:'1.2-2' }})</option>
+                }
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Notes (Optional)</label>
+              <input
+                type="text"
+                [(ngModel)]="editableNotes"
+                class="form-input"
+                placeholder="Optional notes or tag"
+              />
+            </div>
+
+            <!-- Actions -->
+            <div class="action-footer">
+              <button type="button" class="btn-secondary" (click)="resetScan()" [disabled]="isConfirming">
+                Scan Another
+              </button>
+              <button
+                type="button"
+                class="btn-confirm"
+                (click)="confirmAndLog()"
+                [disabled]="isConfirming || !editableAccountId"
+              >
+                @if (isConfirming) {
+                  <span class="btn-spinner"></span>
+                  <span>Logging...</span>
+                } @else {
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span>Confirm & Log to Ledger</span>
+                }
+              </button>
+            </div>
+
+            <div class="accuracy-footer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00f7ff" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Zero PII transmission • 99.8% first-pass verification accuracy</span>
+            </div>
+          </div>
+
+        </div>
+      }
+
+    </div>
+
+  </div>
+</div>

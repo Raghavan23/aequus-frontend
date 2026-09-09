@@ -16,11 +16,12 @@ import {
 
 import { AccountService } from '../../services/account.service';
 import { Account } from '../../models/account.model';
+import { ReceiptScannerModalComponent } from '../../components/receipt-scanner-modal/receipt-scanner-modal.component';
 
 @Component({
   selector: 'aequus-financial-records',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink, ReceiptScannerModalComponent],
   templateUrl: './financial-records.component.html',
   styleUrl: './financial-records.component.scss'
 })
@@ -45,6 +46,7 @@ export class FinancialRecordsComponent implements OnInit {
 
   // Modal state
   showModal = false;
+  showReceiptScannerModal = false;
   isEditing = false;
   editingId: string | null = null;
   deletingRecord: FinancialRecord | null = null;
@@ -138,6 +140,18 @@ export class FinancialRecordsComponent implements OnInit {
       amount: null
     });
     this.showModal = true;
+  }
+
+  openReceiptScanner(): void {
+    this.showReceiptScannerModal = true;
+  }
+
+  closeReceiptScanner(): void {
+    this.showReceiptScannerModal = false;
+  }
+
+  onReceiptConfirmed(): void {
+    this.loadData();
   }
 
   openEditModal(record: FinancialRecord): void {
