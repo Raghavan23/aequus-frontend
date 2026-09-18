@@ -15,7 +15,12 @@ export class AuthService {
   readonly currentUser = signal<User | null>(null);
 
   constructor(private http: HttpClient, private storage: StorageService) {
-    this.currentUser.set(this.readStoredUser());
+    const token = this.storage.getToken();
+    if (token && this.isTokenExpired(token)) {
+      this.logout();
+    } else {
+      this.currentUser.set(this.readStoredUser());
+    }
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
@@ -36,7 +41,33 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.storage.getToken();
+    const token = this.storage.getToken();
+    if (!token) {
+      return false;
+    }
+
+    if (this.isTokenExpired(token)) {
+      this.logout();
+      return false;
+    }
+
+    return true;
+  }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        return true;
+      }
+      const payload = JSON.parse(atob(parts[1]));
+      if (!payload.exp) {
+        return false;
+      }
+      return payload.exp * 1000 < Date.now();
+    } catch {
+      return true;
+    }
   }
 
   private persistSession(response: AuthResponse): void {

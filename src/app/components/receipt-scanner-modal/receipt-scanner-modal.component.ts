@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { Account } from '../../models/account.model';
 import { ParsedReceipt, ConfirmReceiptPayload } from '../../models/receipt.model';
 import { FinancialCategory, EXPENSE_CATEGORY_OPTIONS, categoryLabel } from '../../enums/financial-category.enum';
@@ -9,7 +10,7 @@ import { ReceiptService } from '../../services/receipt.service';
 @Component({
   selector: 'app-receipt-scanner-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './receipt-scanner-modal.component.html',
   styleUrls: ['./receipt-scanner-modal.component.scss']
 })

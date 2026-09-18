@@ -6,15 +6,20 @@
         <a routerLink="/" class="brand-link">
           <img src="images/logos/aequus-logo-new.png" alt="AEQUUS Logo" class="brand-logo" />
         </a>
-        <span class="badge-financial-os">Financial OS</span>
+        <span class="badge-financial-os">Aequus</span>
       </div>
 
       <nav class="nav-links">
-        <button type="button" class="nav-btn" [class.active]="activeNav() === 'product'" (click)="scrollToSection('hero-section', 'product')">Product</button>
-        <button type="button" class="nav-btn" [class.active]="activeNav() === 'features'" (click)="scrollToSection('interactive-copilot', 'features')">Features</button>
-        <button type="button" class="nav-btn" [class.active]="activeNav() === 'demo'" (click)="scrollToSection('demo-preview', 'demo')">Demo</button>
-        <button type="button" class="nav-btn" [class.active]="activeNav() === 'security'" (click)="scrollToSection('security-section', 'security')">Security</button>
-        <button type="button" class="nav-btn" [class.active]="activeNav() === 'pricing'" (click)="scrollToSection('cta-section', 'pricing')">Pricing</button>
+        <button type="button" class="nav-btn" [class.active]="activeNav() === 'product'"
+          (click)="scrollToSection('hero-section', 'product')">Product</button>
+        <button type="button" class="nav-btn" [class.active]="activeNav() === 'features'"
+          (click)="scrollToSection('interactive-copilot', 'features')">Features</button>
+        <button type="button" class="nav-btn" [class.active]="activeNav() === 'demo'"
+          (click)="scrollToSection('demo-preview', 'demo')">Demo</button>
+        <button type="button" class="nav-btn" [class.active]="activeNav() === 'security'"
+          (click)="scrollToSection('security-section', 'security')">Security</button>
+        <button type="button" class="nav-btn" [class.active]="activeNav() === 'pricing'"
+          (click)="scrollToSection('cta-section', 'pricing')">Pricing</button>
       </nav>
 
       <div class="auth-actions">
@@ -49,13 +54,14 @@
 
         <!-- Headline -->
         <h1 class="hero-title">
-          Not Just An Expense Tracker. <br class="hidden-sm"/>
+          Not Just An Expense Tracker. <br class="hidden-sm" />
           <span class="gradient-text">Your Personal Financial Operating System.</span>
         </h1>
 
         <!-- Subheadline -->
         <p class="hero-subtitle">
-          AEQUUS transforms raw banking telemetry into proactive financial intelligence, predictive cash flow trajectories, and autonomous zero-touch budgeting. Know exactly what to do with your capital next.
+          AEQUUS transforms raw banking telemetry into proactive financial intelligence, predictive cash flow
+          trajectories, and autonomous zero-touch budgeting. Know exactly what to do with your capital next.
         </p>
 
         <!-- CTA Buttons -->
@@ -119,16 +125,20 @@
                 <span class="telemetry-badge">Live Telemetry</span>
               </div>
               <p class="preview-console-subtitle">
-                Good morning, Alex. At this trajectory, you'll accumulate <strong class="text-cyan">$8,400 in net surplus</strong> this fiscal year.
+                Good morning, Alex. At this trajectory, you'll accumulate <strong class="text-cyan">$8,400 in net
+                  surplus</strong> this fiscal year.
               </p>
             </div>
           </div>
 
           <!-- Controls -->
           <div class="timeframe-controls">
-            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Weekly'" (click)="setTimeframe('Weekly')">Weekly</button>
-            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Monthly'" (click)="setTimeframe('Monthly')">Monthly</button>
-            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Yearly'" (click)="setTimeframe('Yearly')">Yearly</button>
+            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Weekly'"
+              (click)="setTimeframe('Weekly')">Weekly</button>
+            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Monthly'"
+              (click)="setTimeframe('Monthly')">Monthly</button>
+            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Yearly'"
+              (click)="setTimeframe('Yearly')">Yearly</button>
             <button type="button" class="timeframe-tune" title="Filter Settings">
               <span class="material-symbols-outlined">tune</span>
             </button>
@@ -187,64 +197,90 @@
             <div class="svg-chart-container">
               <svg class="svg-chart" viewBox="0 0 760 200" preserveAspectRatio="none" fill="none">
                 <!-- Grid baselines -->
-                <line x1="0" y1="40" x2="760" y2="40" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3"></line>
-                <line x1="0" y1="100" x2="760" y2="100" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3"></line>
-                <line x1="0" y1="160" x2="760" y2="160" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3"></line>
+                <line x1="0" y1="40" x2="760" y2="40" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3">
+                </line>
+                <line x1="0" y1="100" x2="760" y2="100" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3">
+                </line>
+                <line x1="0" y1="160" x2="760" y2="160" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3">
+                </line>
 
                 <!-- Bars for 12 months -->
                 <!-- Jul -->
-                <rect x="25" y="65" width="30" height="115" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
+                <rect x="25" y="65" width="30" height="115" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
                 <line x1="28" y1="65" x2="52" y2="65" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
 
                 <!-- Aug -->
-                <rect x="88" y="110" width="30" height="70" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="91" y1="110" x2="115" y2="110" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="88" y="110" width="30" height="70" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="91" y1="110" x2="115" y2="110" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Sep (ACTIVE HIGHLIGHT) -->
                 <g filter="drop-shadow(0px 0px 14px rgba(0,247,255,0.45))">
                   <rect x="151" y="45" width="32" height="135" rx="6" fill="url(#cyanGlowGrad)"></rect>
-                  <line x1="154" y1="45" x2="180" y2="45" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></line>
+                  <line x1="154" y1="45" x2="180" y2="45" stroke="#ffffff" stroke-width="3" stroke-linecap="round">
+                  </line>
                 </g>
 
                 <!-- Oct -->
-                <rect x="214" y="75" width="30" height="105" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="217" y1="75" x2="241" y2="75" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="214" y="75" width="30" height="105" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="217" y1="75" x2="241" y2="75" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Nov -->
-                <rect x="277" y="105" width="30" height="75" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="280" y1="105" x2="304" y2="105" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="277" y="105" width="30" height="75" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="280" y1="105" x2="304" y2="105" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Dec -->
-                <rect x="340" y="38" width="30" height="142" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="343" y1="38" x2="367" y2="38" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="340" y="38" width="30" height="142" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="343" y1="38" x2="367" y2="38" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Jan -->
-                <rect x="403" y="125" width="30" height="55" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="406" y1="125" x2="430" y2="125" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="403" y="125" width="30" height="55" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="406" y1="125" x2="430" y2="125" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Feb -->
-                <rect x="466" y="82" width="30" height="98" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="469" y1="82" x2="493" y2="82" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="466" y="82" width="30" height="98" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="469" y1="82" x2="493" y2="82" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Mar -->
-                <rect x="529" y="95" width="30" height="85" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="532" y1="95" x2="556" y2="95" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="529" y="95" width="30" height="85" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="532" y1="95" x2="556" y2="95" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Apr -->
-                <rect x="592" y="42" width="30" height="138" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="595" y1="42" x2="619" y2="42" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="592" y="42" width="30" height="138" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="595" y1="42" x2="619" y2="42" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- May -->
-                <rect x="655" y="112" width="30" height="68" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="658" y1="112" x2="682" y2="112" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="655" y="112" width="30" height="68" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="658" y1="112" x2="682" y2="112" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Jun -->
-                <rect x="718" y="70" width="30" height="110" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5"></rect>
-                <line x1="721" y1="70" x2="745" y2="70" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
+                <rect x="718" y="70" width="30" height="110" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
+                </rect>
+                <line x1="721" y1="70" x2="745" y2="70" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
+                </line>
 
                 <!-- Tooltip on top of Sep -->
                 <rect x="144" y="18" width="46" height="20" rx="4" fill="#003739"></rect>
-                <text x="167" y="32" fill="#54f8ff" font-family="Geist" font-size="10" font-weight="600" text-anchor="middle">▲ +12%</text>
+                <text x="167" y="32" fill="#54f8ff" font-family="Geist" font-size="10" font-weight="600"
+                  text-anchor="middle">▲ +12%</text>
 
                 <!-- Gradient Definition -->
                 <defs>
@@ -269,7 +305,8 @@
                 <span class="text-cyan">⚡ Anomaly:</span> High utility spike ($210 vs avg $80) detected on 14th.
               </div>
               <div class="callout-pill">
-                <span class="text-cyan-light">🔮 Forecast:</span> Checking balance will safely retain $3,400 reserve at month-end.
+                <span class="text-cyan-light">🔮 Forecast:</span> Checking balance will safely retain $3,400 reserve at
+                month-end.
               </div>
             </div>
           </div>
@@ -303,11 +340,19 @@
               <div class="donut-svg-wrapper">
                 <svg class="donut-svg" viewBox="0 0 36 36">
                   <!-- Background Track -->
-                  <path class="donut-track" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="4.5"></path>
+                  <path class="donut-track"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
+                    stroke-width="4.5"></path>
                   <!-- Segments -->
-                  <path class="donut-segment-1" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="45, 100" stroke-width="4.5"></path>
-                  <path class="donut-segment-2" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="25, 100" stroke-dashoffset="-45" stroke-width="4.5"></path>
-                  <path class="donut-segment-3" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="15, 100" stroke-dashoffset="-70" stroke-width="4.5"></path>
+                  <path class="donut-segment-1"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
+                    stroke-dasharray="45, 100" stroke-width="4.5"></path>
+                  <path class="donut-segment-2"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
+                    stroke-dasharray="25, 100" stroke-dashoffset="-45" stroke-width="4.5"></path>
+                  <path class="donut-segment-3"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
+                    stroke-dasharray="15, 100" stroke-dashoffset="-70" stroke-width="4.5"></path>
                 </svg>
                 <div class="donut-center-label">
                   <span class="donut-center-val">₹28k</span>
@@ -342,8 +387,9 @@
           <div class="copilot-query-wrap">
             <span class="material-symbols-outlined icon-cyan">chat_bubble</span>
             <span class="copilot-query-text">
-              <span class="text-muted font-mono">User asks:</span> “Can I afford a MacBook next month?” 
-              <span class="text-cyan-dim ml-1">→ “Yes. Trim dining by $50/wk for 6 weeks, no emergency buffer touched.”</span>
+              <span class="text-muted font-mono">User asks:</span> “Can I afford a MacBook next month?”
+              <span class="text-cyan-dim ml-1">→ “Yes. Trim dining by $50/wk for 6 weeks, no emergency buffer
+                touched.”</span>
             </span>
           </div>
           <span class="copilot-active-badge">Autonomous Copilot Active</span>
@@ -357,7 +403,8 @@
         <span class="section-tagline">Paradigm Inversion</span>
         <h2 class="section-heading">Why Legacy Budgeting Dies In 90 Days.</h2>
         <p class="section-description">
-          Traditional finance apps punish you with homework. AEQUUS eliminates manual friction with a mathematical, autonomous intelligence layer.
+          Traditional finance apps punish you with homework. AEQUUS eliminates manual friction with a mathematical,
+          autonomous intelligence layer.
         </p>
       </div>
 
@@ -381,14 +428,16 @@
                 <span class="material-symbols-outlined icon-error">close</span>
                 <div>
                   <strong class="item-title">Rigid, Unrealistic Categories:</strong>
-                  <p class="item-desc">Break your budget once on groceries and the entire monthly tracker is invalidated.</p>
+                  <p class="item-desc">Break your budget once on groceries and the entire monthly tracker is
+                    invalidated.</p>
                 </div>
               </li>
               <li class="comparison-item">
                 <span class="material-symbols-outlined icon-error">close</span>
                 <div>
                   <strong class="item-title">Passive Rear-View Mirror Charts:</strong>
-                  <p class="item-desc">Shows you what you already overspent last week with zero proactive remediation.</p>
+                  <p class="item-desc">Shows you what you already overspent last week with zero proactive remediation.
+                  </p>
                 </div>
               </li>
               <li class="comparison-item">
@@ -418,28 +467,32 @@
                 <span class="material-symbols-outlined icon-cyan-filled">check_circle</span>
                 <div>
                   <strong class="item-title text-primary">Autonomous Multimodal Telemetry:</strong>
-                  <p class="item-desc">Zero-touch parsing of merchants, receipts, and line-item taxes with precision OCR vision.</p>
+                  <p class="item-desc">Zero-touch parsing of merchants, receipts, and line-item taxes with precision OCR
+                    vision.</p>
                 </div>
               </li>
               <li class="comparison-item">
                 <span class="material-symbols-outlined icon-cyan-filled">check_circle</span>
                 <div>
                   <strong class="item-title text-primary">Dynamic Auto-Rebalancing:</strong>
-                  <p class="item-desc">Unexpected bills don't wreck your budget; the engine fluidly recalculates flexible categories.</p>
+                  <p class="item-desc">Unexpected bills don't wreck your budget; the engine fluidly recalculates
+                    flexible categories.</p>
                 </div>
               </li>
               <li class="comparison-item">
                 <span class="material-symbols-outlined icon-cyan-filled">check_circle</span>
                 <div>
                   <strong class="item-title text-primary">Predictive 30-Day Forward Trajectory:</strong>
-                  <p class="item-desc">Anticipates your liquidity reserves before expenses hit, protecting your long-term wealth.</p>
+                  <p class="item-desc">Anticipates your liquidity reserves before expenses hit, protecting your
+                    long-term wealth.</p>
                 </div>
               </li>
               <li class="comparison-item">
                 <span class="material-symbols-outlined icon-cyan-filled">check_circle</span>
                 <div>
                   <strong class="item-title text-primary">Deterministic Zero-Knowledge Privacy:</strong>
-                  <p class="item-desc">Your balance never leaves secure enclaves. Zero affiliate junk, zero tracking.</p>
+                  <p class="item-desc">Your balance never leaves secure enclaves. Zero affiliate junk, zero tracking.
+                  </p>
                 </div>
               </li>
             </ul>
@@ -476,7 +529,8 @@
               </div>
             </div>
             <p class="bento-desc">
-              Ask natural language capital allocation questions. The copilot cross-analyzes recurrent cash flows, upcoming liabilities, and yield accounts in real time.
+              Ask natural language capital allocation questions. The copilot cross-analyzes recurrent cash flows,
+              upcoming liabilities, and yield accounts in real time.
             </p>
             <!-- Chat Transcript Box -->
             <div class="mockup-box">
@@ -487,13 +541,15 @@
               <div class="chat-row border-top">
                 <span class="chat-aequus-badge">Aequus</span>
                 <p class="chat-text-aequus">
-                  “Yes. Based on your current cash velocity, if you adjust your dining budget down by <strong>$50/week for 6 weeks</strong>, your emergency reserve remains 100% intact.”
+                  “Yes. Based on your current cash velocity, if you adjust your dining budget down by <strong>$50/week
+                    for 6 weeks</strong>, your emergency reserve remains 100% intact.”
                 </p>
               </div>
             </div>
           </div>
           <div class="bento-footer">
-            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Zero PII transmitted to external foundation models
+            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Zero PII transmitted to external
+            foundation models
           </div>
         </div>
 
@@ -510,7 +566,8 @@
               </div>
             </div>
             <p class="bento-desc">
-              Simply drop an invoice or receipt screenshot. Neural vision parses merchant metadata, subtotal, tax breakdown, and routes to double-entry general ledger books.
+              Simply drop an invoice or receipt screenshot. Neural vision parses merchant metadata, subtotal, tax
+              breakdown, and routes to double-entry general ledger books.
             </p>
             <!-- Visual parsed receipt card -->
             <div class="mockup-box">
@@ -529,7 +586,8 @@
             </div>
           </div>
           <div class="bento-footer">
-            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> 99.8% first-pass accuracy across 42 currencies
+            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> 99.8% first-pass accuracy across 42
+            currencies
           </div>
         </div>
 
@@ -546,7 +604,8 @@
               </div>
             </div>
             <p class="bento-desc">
-              Simulates 10,000 future liquidity outcomes over rolling 30-day windows. Instantly flags hidden subscription crept price hikes before execution.
+              Simulates 10,000 future liquidity outcomes over rolling 30-day windows. Instantly flags hidden
+              subscription crept price hikes before execution.
             </p>
             <!-- Forecast Curve Sparkline Visual -->
             <div class="mockup-box">
@@ -555,8 +614,10 @@
                 <span class="text-cyan font-bold">Safe Lower Bound: $4,200</span>
               </div>
               <svg class="sparkline-svg" viewBox="0 0 300 60" fill="none">
-                <path d="M0 45 C 50 40, 100 25, 150 30 C 200 35, 250 15, 300 10" stroke="#00f7ff" stroke-width="2"></path>
-                <path d="M0 45 C 50 40, 100 25, 150 30 C 200 35, 250 15, 300 10 L 300 60 L 0 60 Z" fill="url(#blueFade)" opacity="0.15"></path>
+                <path d="M0 45 C 50 40, 100 25, 150 30 C 200 35, 250 15, 300 10" stroke="#00f7ff" stroke-width="2">
+                </path>
+                <path d="M0 45 C 50 40, 100 25, 150 30 C 200 35, 250 15, 300 10 L 300 60 L 0 60 Z" fill="url(#blueFade)"
+                  opacity="0.15"></path>
                 <circle cx="150" cy="30" r="4" fill="#54f8ff"></circle>
                 <defs>
                   <linearGradient id="blueFade" x1="0" y1="0" x2="0" y2="1">
@@ -568,7 +629,8 @@
             </div>
           </div>
           <div class="bento-footer">
-            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Proactive notice 5 days prior to recurring debits
+            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Proactive notice 5 days prior to
+            recurring debits
           </div>
         </div>
 
@@ -585,7 +647,8 @@
               </div>
             </div>
             <p class="bento-desc">
-              When an unexpected $500 car maintenance bill hits, the OS doesn't sound alarms. It algorithmically reduces micro-discretionary categories so monthly wealth targets remain untouched.
+              When an unexpected $500 car maintenance bill hits, the OS doesn't sound alarms. It algorithmically reduces
+              micro-discretionary categories so monthly wealth targets remain untouched.
             </p>
             <!-- Rebalancing interactive simulation widget -->
             <div class="mockup-box">
@@ -605,7 +668,8 @@
             </div>
           </div>
           <div class="bento-footer">
-            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Guaranteed retirement and savings contribution lock
+            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Guaranteed retirement and savings
+            contribution lock
           </div>
         </div>
       </div>
@@ -624,7 +688,8 @@
             <div class="pillar-number">01</div>
             <h3 class="pillar-title">Financial Management</h3>
             <p class="pillar-desc">
-              The immutable core. Double-entry general ledger architecture, real-time multi-currency syncing across global institutions, and high-frequency reconciliation with zero floating point drift.
+              The immutable core. Double-entry general ledger architecture, real-time multi-currency syncing across
+              global institutions, and high-frequency reconciliation with zero floating point drift.
             </p>
             <ul class="pillar-feature-list">
               <li class="pillar-feature-item"><span class="cyan-bullet"></span> Multi-vault balance segregation</li>
@@ -636,7 +701,8 @@
             <div class="pillar-number">02</div>
             <h3 class="pillar-title">Financial Intelligence</h3>
             <p class="pillar-desc">
-              Continuous vector-based statistical evaluation. Cash velocity monitoring, capital-at-risk stress simulations, and autonomous wealth-health scoring that updates after every transaction.
+              Continuous vector-based statistical evaluation. Cash velocity monitoring, capital-at-risk stress
+              simulations, and autonomous wealth-health scoring that updates after every transaction.
             </p>
             <ul class="pillar-feature-list">
               <li class="pillar-feature-item"><span class="cyan-bullet"></span> Spending velocity alerts</li>
@@ -648,7 +714,8 @@
             <div class="pillar-number">03</div>
             <h3 class="pillar-title">Autonomous Copilot</h3>
             <p class="pillar-desc">
-              Zero-friction guidance. Natural conversational execution, automated morning liquidity briefs, and instant simulation of life capital decisions without ever opening a spreadsheet.
+              Zero-friction guidance. Natural conversational execution, automated morning liquidity briefs, and instant
+              simulation of life capital decisions without ever opening a spreadsheet.
             </p>
             <ul class="pillar-feature-list">
               <li class="pillar-feature-item"><span class="cyan-bullet"></span> Context-aware query answers</li>
@@ -665,24 +732,28 @@
         <div class="security-text-col">
           <span class="section-tagline">Zero-Compromise Security</span>
           <h2 class="section-heading">
-            Institutional Custody Standard. <br class="hidden-sm"/>
+            Institutional Custody Standard. <br class="hidden-sm" />
             Zero PII In Large Language Models.
           </h2>
           <p class="section-description">
-            Aequus is engineered under strict Domain-Driven Design (DDD) principles. Financial logic executes deterministically in hardened Rust backends, while conversational models receive only isolated, anonymized mathematical vectors.
+            Aequus is engineered under strict Domain-Driven Design (DDD) principles. Financial logic executes
+            deterministically in hardened Rust backends, while conversational models receive only isolated, anonymized
+            mathematical vectors.
           </p>
           <div class="security-features-row">
             <div class="security-feature-card">
               <div class="security-feature-title">
                 <span class="material-symbols-outlined icon-cyan">vpn_key</span> Client-Side Key Generation
               </div>
-              <p class="security-feature-desc">Your encryption keys are derived on your physical device, rendering server-side leaks mathematically impossible.</p>
+              <p class="security-feature-desc">Your encryption keys are derived on your physical device, rendering
+                server-side leaks mathematically impossible.</p>
             </div>
             <div class="security-feature-card">
               <div class="security-feature-title">
                 <span class="material-symbols-outlined icon-cyan">dataset</span> Anonymized Vector RAG
               </div>
-              <p class="security-feature-desc">Account numbers, names, and identifiers are stripped before inference queries touch GPU clusters.</p>
+              <p class="security-feature-desc">Account numbers, names, and identifiers are stripped before inference
+                queries touch GPU clusters.</p>
             </div>
           </div>
         </div>
@@ -739,14 +810,8 @@
           <!-- Email Input + Button Form -->
           <form class="early-access-form" (submit)="$event.preventDefault(); submitEarlyAccess()">
             <div class="input-wrap">
-              <input 
-                type="email" 
-                class="early-access-input" 
-                placeholder="name@domain.com" 
-                [(ngModel)]="emailInput" 
-                name="email"
-                required 
-              />
+              <input type="email" class="early-access-input" placeholder="name@domain.com" [(ngModel)]="emailInput"
+                name="email" required />
             </div>
             <button type="submit" class="btn-early-access" [disabled]="isSubmitting">
               {{ isSubmitting ? 'Registering...' : 'Get Early Access' }}
@@ -778,7 +843,8 @@
           <img src="images/logos/aequus-logo-new.png" alt="AEQUUS Logo" class="footer-logo" />
           <p class="footer-tagline">Intelligence for your financial life.</p>
           <p class="footer-desc">
-            AEQUUS synthesizes multi-asset telemetry, institutional-grade risk models, and private autonomous agents to govern wealth with mathematical discipline.
+            AEQUUS synthesizes multi-asset telemetry, institutional-grade risk models, and private autonomous agents to
+            govern wealth with mathematical discipline.
           </p>
           <div class="footer-status">
             <span class="pulse-dot"></span>
