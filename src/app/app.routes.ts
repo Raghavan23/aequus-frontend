@@ -4,16 +4,10 @@ import { guestGuard } from './guards/guest.guard';
 import { rootGuard } from './guards/root.guard';
 
 export const routes: Routes = [
-  // Landing / Pre-login Dashboard page (visitors arriving at aequus.in /)
+  // Landing Page
   {
     path: '',
     pathMatch: 'full',
-    canActivate: [rootGuard],
-    loadComponent: () =>
-      import('./pages/landing/landing.component').then((m) => m.LandingComponent)
-  },
-  {
-    path: 'dashboard',
     canActivate: [rootGuard],
     loadComponent: () =>
       import('./pages/landing/landing.component').then((m) => m.LandingComponent)
@@ -25,7 +19,7 @@ export const routes: Routes = [
       import('./pages/landing/landing.component').then((m) => m.LandingComponent)
   },
 
-  // Authenticated Application (home, financial records, accounts)
+  // Authenticated Application Shell
   {
     path: '',
     loadComponent: () =>
@@ -38,21 +32,37 @@ export const routes: Routes = [
           import('./pages/home/home.component').then((m) => m.HomeComponent)
       },
       {
-        path: 'financial-records',
+        path: 'reconciliation',
         loadComponent: () =>
-          import('./pages/financial-records/financial-records.component').then(
-            (m) => m.FinancialRecordsComponent
+          import('./pages/reconciliation/reconciliation.component').then(
+            (m) => m.ReconciliationComponent
           )
       },
       {
-        path: 'accounts',
+        path: 'clients',
         loadComponent: () =>
-          import('./pages/accounts/accounts.component').then((m) => m.AccountsComponent)
+          import('./pages/clients/clients.component').then((m) => m.ClientsComponent)
+      },
+      {
+        path: 'invoices',
+        loadComponent: () =>
+          import('./pages/invoices/invoices.component').then((m) => m.InvoicesComponent)
+      },
+      // Backward compatibility redirects
+      {
+        path: 'accounts',
+        redirectTo: 'clients',
+        pathMatch: 'full'
+      },
+      {
+        path: 'financial-records',
+        redirectTo: 'reconciliation',
+        pathMatch: 'full'
       }
     ]
   },
 
-  // Auth pages (login, register)
+  // Auth Pages
   {
     path: 'login',
     canActivate: [guestGuard],
@@ -66,6 +76,9 @@ export const routes: Routes = [
       import('./pages/register/register.component').then((m) => m.RegisterComponent)
   },
 
-  // Fallback
-  { path: '**', redirectTo: '' }
+  // Wildcard Fallback
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];

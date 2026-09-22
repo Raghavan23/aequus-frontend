@@ -1,0 +1,297 @@
+<div class="recon-workspace">
+  <!-- Top Control Bar -->
+  <header class="recon-header">
+    <div class="header-left">
+      <div class="client-selector-box">
+        <label for="clientSelect">Target Client Company:</label>
+        <select
+          id="clientSelect"
+          class="form-select client-dropdown"
+          [(ngModel)]="selectedClientId"
+          (ngModelChange)="onClientChange()"
+        >
+          <option value="" disabled>Select a Client Company</option>
+          <option *ngFor="let c of clients" [value]="c.id">
+            {{ c.name }} {{ c.gstin ? '(' + c.gstin + ')' : '' }}
+          </option>
+        </select>
+      </div>
+
+      <div class="client-badge" *ngIf="selectedClient">
+        <span class="badge-gst" *ngIf="selectedClient.gstin">GSTIN: {{ selectedClient.gstin }}</span>
+        <span class="badge-pan" *ngIf="selectedClient.pan">PAN: {{ selectedClient.pan }}</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="showStatementModal = true"
+        [disabled]="!selectedClientId"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        Import Bank Statement
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="showInvoiceModal = true"
+        [disabled]="!selectedClientId"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="18" x2="12" y2="12"></line>
+          <line x1="9" y1="15" x2="15" y2="15"></line>
+        </svg>
+        Scan / Add Invoices
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="runReconciliation()"
+        [disabled]="!selectedClientId || isReconciling"
+      >
+        <svg *ngIf="!isReconciling" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+        <span *ngIf="isReconciling" class="spinner-inline"></span>
+        {{ isReconciling ? 'Running AI Matching...' : 'Run Autonomous Match' }}
+      </button>
+    </div>
+  </header>
+
+  <!-- Alerts -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <!-- Telemetry KPI Bar -->
+  <section class="recon-kpi-bar" *ngIf="summary">
+    <div class="kpi-card">
+      <span class="kpi-label">Total Transactions</span>
+      <span class="kpi-val">{{ summary.totalCount }}</span>
+    </div>
+    <div class="kpi-card success">
+      <span class="kpi-label">Matched Items</span>
+      <span class="kpi-val">{{ summary.matchedCount }}</span>
+    </div>
+    <div class="kpi-card warning">
+      <span class="kpi-label">Anomalies Detected</span>
+      <span class="kpi-val">{{ summary.anomalyCount }}</span>
+    </div>
+    <div class="kpi-card muted">
+      <span class="kpi-label">Unmatched</span>
+      <span class="kpi-val">{{ summary.unmatchedCount }}</span>
+    </div>
+    <div class="kpi-card highlight">
+      <span class="kpi-label">Match Accuracy Rate</span>
+      <span class="kpi-val">{{ summary.matchRatePercentage }}%</span>
+    </div>
+  </section>
+
+  <!-- Split-Screen Reconciliation Workspace -->
+  <div class="recon-split-grid" *ngIf="selectedClientId">
+    <!-- LEFT PANEL: Bank Transactions Feed -->
+    <div class="split-pane left-pane">
+      <div class="pane-header">
+        <div class="pane-title-group">
+          <h3>Bank Feed Transactions</h3>
+          <span class="count-pill">{{ transactions.length }} items</span>
+        </div>
+
+        <div class="filter-tabs">
+          <button
+            type="button"
+            class="tab-btn"
+            [class.active]="activeTxnFilter === 'ALL'"
+            (click)="setFilter('ALL')"
+          >
+            All
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            [class.active]="activeTxnFilter === 'UNMATCHED'"
+            (click)="setFilter('UNMATCHED')"
+          >
+            Unmatched
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            [class.active]="activeTxnFilter === 'MATCHED'"
+            (click)="setFilter('MATCHED')"
+          >
+            Matched
+          </button>
+          <button
+            type="button"
+            class="tab-btn"
+            [class.active]="activeTxnFilter === 'ANOMALY'"
+            (click)="setFilter('ANOMALY')"
+          >
+            Anomalies
+          </button>
+        </div>
+      </div>
+
+      <div class="pane-scrollable-body">
+        <div class="empty-state" *ngIf="transactions.length === 0">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+          <p>No transactions found for this filter.</p>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="showStatementModal = true">
+            Import Bank Statement
+          </button>
+        </div>
+
+        <div class="txn-card" *ngFor="let tx of transactions" [class.anomaly]="tx.matchStatus === 'ANOMALY'" [class.matched]="tx.matchStatus === 'MATCHED'">
+          <div class="txn-card-top">
+            <span class="txn-date">{{ tx.transactionDate }}</span>
+            <span class="status-badge" [ngClass]="tx.matchStatus.toLowerCase()">
+              {{ tx.matchStatus }}
+            </span>
+          </div>
+
+          <div class="txn-narration" title="{{ tx.narration }}">
+            {{ tx.narration }}
+          </div>
+
+          <div class="txn-card-bottom">
+            <span class="txn-head" *ngIf="tx.accountingHead">{{ tx.accountingHead }}</span>
+            <span class="txn-amount" [class.debit]="tx.type === 'DEBIT'" [class.credit]="tx.type === 'CREDIT'">
+              {{ tx.type === 'DEBIT' ? '-' : '+' }}₹{{ tx.amount | number:'1.2-2' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Reconciliation Matches & Invoice Pairing -->
+    <div class="split-pane right-pane">
+      <div class="pane-header">
+        <div class="pane-title-group">
+          <h3>AI Matching Workspace</h3>
+          <span class="count-pill">{{ matches.length }} Match Rules</span>
+        </div>
+      </div>
+
+      <div class="pane-scrollable-body">
+        <div class="empty-state" *ngIf="matches.length === 0">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <p>No reconciliation matches computed yet.</p>
+          <button type="button" class="btn btn-sm btn-primary" (click)="runReconciliation()">
+            Run Autonomous Match Engine
+          </button>
+        </div>
+
+        <div class="match-item-card" *ngFor="let m of matches" [class.accepted]="m.status === 'ACCEPTED'" [class.rejected]="m.status === 'REJECTED'">
+          <div class="match-header">
+            <div class="confidence-badge" [class.high]="m.confidenceScore >= 90" [class.medium]="m.confidenceScore < 90 && m.confidenceScore >= 75">
+              <span class="confidence-num">{{ m.confidenceScore }}%</span>
+              <span class="confidence-type">{{ m.matchType }} MATCH</span>
+            </div>
+
+            <span class="match-status-tag" [ngClass]="m.status.toLowerCase()">
+              {{ m.status }}
+            </span>
+          </div>
+
+          <!-- Transaction vs Invoice Comparison Box -->
+          <div class="match-comparison-grid">
+            <!-- Bank Side -->
+            <div class="compare-col bank-col">
+              <span class="col-title">Bank Transaction</span>
+              <div class="compare-amount debit">-₹{{ m.transaction.amount | number:'1.2-2' }}</div>
+              <div class="compare-desc">{{ m.transaction.narration }}</div>
+              <div class="compare-meta">Date: {{ m.transaction.transactionDate }}</div>
+            </div>
+
+            <div class="compare-arrow">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+
+            <!-- Invoice Side -->
+            <div class="compare-col inv-col" *ngIf="m.invoice">
+              <span class="col-title">Matched Invoice</span>
+              <div class="compare-amount">₹{{ m.invoice.totalAmount | number:'1.2-2' }}</div>
+              <div class="compare-desc">{{ m.invoice.vendorName }} ({{ m.invoice.invoiceNumber }})</div>
+              <div class="compare-meta">
+                Inv Date: {{ m.invoice.invoiceDate }} | GST: {{ m.invoice.vendorGstin || 'N/A' }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Reasoning Note -->
+          <div class="match-reasoning" *ngIf="m.reasoning">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span>{{ m.reasoning }}</span>
+          </div>
+
+          <!-- Decision Action Bar -->
+          <div class="match-action-row" *ngIf="m.status === 'SUGGESTED'">
+            <button
+              type="button"
+              class="btn btn-sm btn-success"
+              (click)="reviewMatch(m, 'ACCEPTED')"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Accept Match
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-danger"
+              (click)="reviewMatch(m, 'REJECTED')"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<app-statement-importer-modal
+  *ngIf="showStatementModal"
+  [preselectedClientId]="selectedClientId"
+  (closed)="showStatementModal = false"
+  (importCompleted)="onStatementImportSuccess()"
+></app-statement-importer-modal>
+
+<app-invoice-scanner-modal
+  *ngIf="showInvoiceModal"
+  [preselectedClientId]="selectedClientId"
+  (closed)="showInvoiceModal = false"
+  (scanCompleted)="onInvoiceScanSuccess()"
+></app-invoice-scanner-modal>

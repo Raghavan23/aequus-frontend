@@ -1,0 +1,166 @@
+<div class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-icon-box">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </div>
+      <div>
+        <h2>AI Invoice Vision Scanner</h2>
+        <p class="subtitle">Extract vendor, GSTIN, line items, and taxes automatically via Multimodal VLM</p>
+      </div>
+      <button type="button" class="close-btn" (click)="closeModal()" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!-- Client Selector -->
+      <div class="form-group" *ngIf="!parsedInvoice">
+        <label for="clientSelectInvoice">Client Company <span class="required">*</span></label>
+        <select id="clientSelectInvoice" class="form-select" [(ngModel)]="selectedClientId">
+          <option value="" disabled>Select target client company</option>
+          <option *ngFor="let c of clients" [value]="c.id">
+            {{ c.name }} {{ c.gstin ? '(' + c.gstin + ')' : '' }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Drag & Drop Zone -->
+      <div
+        *ngIf="!parsedInvoice"
+        class="drop-zone"
+        [class.dragging]="isDragging"
+        [class.loading]="isScanning"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()"
+      >
+        <input
+          #fileInput
+          type="file"
+          accept="image/*,.pdf"
+          style="display: none"
+          (change)="onFileSelected($event)"
+        />
+
+        <div *ngIf="!isScanning" class="drop-content">
+          <svg class="cloud-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          <p class="drop-text">Drag & drop Vendor Invoice (PDF, PNG, JPG) or <span>browse</span></p>
+          <p class="drop-hint">Autonomous vision model parses invoice tables, GST, and totals</p>
+        </div>
+
+        <div *ngIf="isScanning" class="scanning-state">
+          <div class="spinner"></div>
+          <p>Running VLM Multi-pass Neural Decomposition...</p>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-banner" *ngIf="errorMessage">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Extracted Invoice Form & Line Items Preview -->
+      <div *ngIf="parsedInvoice" class="extracted-details-grid">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Invoice Number <span class="required">*</span></label>
+            <input type="text" class="form-control" [(ngModel)]="invoiceNumber" />
+          </div>
+          <div class="form-group">
+            <label>Vendor Name <span class="required">*</span></label>
+            <input type="text" class="form-control" [(ngModel)]="vendorName" />
+          </div>
+          <div class="form-group">
+            <label>Vendor GSTIN</label>
+            <input type="text" class="form-control" [(ngModel)]="vendorGstin" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Invoice Date</label>
+            <input type="date" class="form-control" [(ngModel)]="invoiceDate" />
+          </div>
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" class="form-control" [(ngModel)]="dueDate" />
+          </div>
+          <div class="form-group">
+            <label>Subtotal (₹)</label>
+            <input type="number" class="form-control" [(ngModel)]="subtotal" />
+          </div>
+          <div class="form-group">
+            <label>GST Amount (₹)</label>
+            <input type="number" class="form-control" [(ngModel)]="gstAmount" />
+          </div>
+          <div class="form-group">
+            <label>Total Amount (₹) <span class="required">*</span></label>
+            <input type="number" class="form-control highlight-input" [(ngModel)]="totalAmount" />
+          </div>
+        </div>
+
+        <!-- Line items table if present -->
+        <div class="items-section" *ngIf="parsedInvoice.items && parsedInvoice.items.length > 0">
+          <h4>Parsed Line Items</h4>
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+                <th>GST Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of parsedInvoice.items">
+                <td>{{ item.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.unitPrice | number:'1.2-2' }}</td>
+                <td>₹{{ item.totalPrice | number:'1.2-2' }}</td>
+                <td>{{ item.gstRate }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+      <button
+        *ngIf="parsedInvoice"
+        type="button"
+        class="btn btn-primary"
+        [disabled]="isSaving || !vendorName || !invoiceNumber || totalAmount <= 0"
+        (click)="saveInvoice()"
+      >
+        <span *ngIf="isSaving" class="spinner-inline"></span>
+        {{ isSaving ? 'Saving...' : 'Save & Link to Reconciliation' }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<div class="invoices-page">
+  <div class="page-header">
+    <div class="header-title-group">
+      <h2>Invoice & Bill Repository</h2>
+      <p class="subtitle">Search, manage, and scan vendor invoices across your client portfolio</p>
+    </div>
+
+    <div class="header-actions">
+      <div class="client-selector">
+        <select class="form-select" [(ngModel)]="selectedClientId" (ngModelChange)="onClientChange()">
+          <option value="" disabled>Select Client Company</option>
+          <option *ngFor="let c of clients" [value]="c.id">{{ c.name }}</option>
+        </select>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="showScannerModal = true"
+        [disabled]="!selectedClientId"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="18" x2="12" y2="12"></line>
+          <line x1="9" y1="15" x2="15" y2="15"></line>
+        </svg>
+        AI Scan / Add Invoice
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="filter-buttons">
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="statusFilter === 'ALL'"
+        (click)="setFilter('ALL')"
+      >
+        All Invoices
+      </button>
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="statusFilter === 'UNMATCHED'"
+        (click)="setFilter('UNMATCHED')"
+      >
+        Unmatched
+      </button>
+      <button
+        type="button"
+        class="filter-btn"
+        [class.active]="statusFilter === 'MATCHED'"
+        (click)="setFilter('MATCHED')"
+      >
+        Matched
+      </button>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Invoice #</th>
+          <th>Vendor Name</th>
+          <th>Vendor GSTIN</th>
+          <th>Invoice Date</th>
+          <th>Due Date</th>
+          <th>Subtotal</th>
+          <th>GST</th>
+          <th>Total Amount</th>
+          <th>Source</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="invoices.length === 0 && !isLoading">
+          <td colspan="11" class="text-center py-4">No invoices found for this client.</td>
+        </tr>
+        <tr *ngFor="let inv of invoices">
+          <td class="font-bold text-white">{{ inv.invoiceNumber }}</td>
+          <td>{{ inv.vendorName }}</td>
+          <td><span class="mono-badge">{{ inv.vendorGstin || '—' }}</span></td>
+          <td>{{ inv.invoiceDate || '—' }}</td>
+          <td>{{ inv.dueDate || '—' }}</td>
+          <td>₹{{ (inv.subtotal || 0) | number:'1.2-2' }}</td>
+          <td>₹{{ (inv.gstAmount || 0) | number:'1.2-2' }}</td>
+          <td class="amount-cell">₹{{ inv.totalAmount | number:'1.2-2' }}</td>
+          <td><span class="source-tag">{{ inv.sourceType }}</span></td>
+          <td>
+            <span class="status-badge" [ngClass]="inv.matchStatus.toLowerCase()">
+              {{ inv.matchStatus }}
+            </span>
+          </td>
+          <td>
+            <button type="button" class="icon-btn danger" (click)="deleteInvoice(inv)" title="Delete">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-invoice-scanner-modal
+  *ngIf="showScannerModal"
+  [preselectedClientId]="selectedClientId"
+  (closed)="showScannerModal = false"
+  (scanCompleted)="onScanCompleted()"
+></app-invoice-scanner-modal>

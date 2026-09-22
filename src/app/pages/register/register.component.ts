@@ -25,6 +25,7 @@ export class RegisterComponent {
   form = this.fb.group(
     {
       name: ['', [Validators.required]],
+      organizationName: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]]
@@ -36,6 +37,10 @@ export class RegisterComponent {
 
   get name() {
     return this.form.controls.name;
+  }
+
+  get organizationName() {
+    return this.form.controls.organizationName;
   }
 
   get email() {
@@ -67,10 +72,15 @@ export class RegisterComponent {
     this.loading = true;
     this.errorMessage = null;
 
-    const { name, email, password } = this.form.getRawValue();
+    const { name, organizationName, email, password } = this.form.getRawValue();
 
     this.authService
-      .register({ name: name!, email: email!, password: password! })
+      .register({
+        name: name!,
+        organizationName: organizationName || undefined,
+        email: email!,
+        password: password!
+      })
       .subscribe({
         next: () => this.router.navigate(['/home']),
         error: (err: HttpErrorResponse) => {

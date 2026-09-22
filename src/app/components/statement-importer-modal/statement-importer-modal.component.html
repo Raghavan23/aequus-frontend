@@ -1,0 +1,159 @@
+<div class="modal-backdrop" (click)="closeModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <div class="header-icon-box">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+      </div>
+      <div>
+        <h2>Import Client Bank Statement</h2>
+        <p class="subtitle">Upload monthly bank feeds (CSV, PDF) to auto-populate the reconciliation ledger</p>
+      </div>
+      <button type="button" class="close-btn" (click)="closeModal()" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+      <!-- Client Selector -->
+      <div class="form-group" *ngIf="!parseResult">
+        <label for="clientSelectModal">Client Company <span class="required">*</span></label>
+        <select id="clientSelectModal" class="form-select" [(ngModel)]="selectedClientId">
+          <option value="" disabled>Select target client company</option>
+          <option *ngFor="let c of clients" [value]="c.id">
+            {{ c.name }} {{ c.gstin ? '(' + c.gstin + ')' : '' }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Drag & Drop Zone -->
+      <div
+        *ngIf="!parseResult"
+        class="drop-zone"
+        [class.dragging]="isDragging"
+        [class.loading]="isParsing"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+        (click)="fileInput.click()"
+      >
+        <input
+          #fileInput
+          type="file"
+          accept=".csv,.pdf"
+          style="display: none"
+          (change)="onFileSelected($event)"
+        />
+
+        <div *ngIf="!isParsing" class="drop-content">
+          <svg class="cloud-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          <p class="drop-text">Drag & drop Indian bank statement (PDF, CSV) or <span>browse</span></p>
+          <p class="drop-hint">Supports HDFC, ICICI, SBI, Axis Bank statement formats</p>
+        </div>
+
+        <div *ngIf="isParsing" class="parsing-state">
+          <div class="spinner"></div>
+          <p>Parsing bank statement feed & checking for duplicates...</p>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-banner" *ngIf="errorMessage">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Preview Parsed Transactions Table -->
+      <div *ngIf="parseResult" class="preview-section">
+        <div class="preview-stats">
+          <div class="stat-pill">Total: <strong>{{ parseResult.totalCount }}</strong></div>
+          <div class="stat-pill success">New: <strong>{{ parseResult.newCount }}</strong></div>
+          <div class="stat-pill warning" *ngIf="parseResult.duplicateCount > 0">
+            Duplicates: <strong>{{ parseResult.duplicateCount }}</strong>
+          </div>
+          <div class="stat-pill debit">Debit: <strong>₹{{ parseResult.totalDebit | number:'1.2-2' }}</strong></div>
+          <div class="stat-pill credit">Credit: <strong>₹{{ parseResult.totalCredit | number:'1.2-2' }}</strong></div>
+        </div>
+
+        <div class="table-container">
+          <table class="preview-table">
+            <thead>
+              <tr>
+                <th style="width: 40px">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedCount === parseResult.items.length"
+                    (change)="toggleSelectAll($any($event.target).checked)"
+                  />
+                </th>
+                <th>Date</th>
+                <th>Narration</th>
+                <th>Head</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of parseResult.items" [class.dup-row]="item.isDuplicate">
+                <td>
+                  <input type="checkbox" [(ngModel)]="item.selected" />
+                </td>
+                <td>{{ item.date }}</td>
+                <td class="narration-cell" title="{{ item.narration }}">{{ item.narration }}</td>
+                <td>
+                  <select class="form-select-sm" [(ngModel)]="item.accountingHead">
+                    <option *ngFor="let h of accountingHeads" [value]="h">{{ h }}</option>
+                  </select>
+                </td>
+                <td>
+                  <span class="badge" [class.badge-debit]="item.type === 'DEBIT'" [class.badge-credit]="item.type === 'CREDIT'">
+                    {{ item.type }}
+                  </span>
+                </td>
+                <td class="amount-cell" [class.debit]="item.type === 'DEBIT'" [class.credit]="item.type === 'CREDIT'">
+                  ₹{{ item.amount | number:'1.2-2' }}
+                </td>
+                <td>
+                  <span class="dup-tag" *ngIf="item.isDuplicate">Duplicate</span>
+                  <span class="new-tag" *ngIf="!item.isDuplicate">New</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+      <button
+        *ngIf="parseResult"
+        type="button"
+        class="btn btn-primary"
+        [disabled]="selectedCount === 0 || isConfirming"
+        (click)="confirmImport()"
+      >
+        <span *ngIf="isConfirming" class="spinner-inline"></span>
+        {{ isConfirming ? 'Importing...' : 'Confirm Import (' + selectedCount + ' items)' }}
+      </button>
+    </div>
+  </div>
+</div>
