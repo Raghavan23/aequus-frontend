@@ -6,31 +6,31 @@
         <a routerLink="/" class="brand-link">
           <img src="images/logos/aequus-logo-new.png" alt="AEQUUS Logo" class="brand-logo" />
         </a>
-        <span class="badge-financial-os">Aequus</span>
+        <span class="badge-financial-os">Reconciliation Engine</span>
       </div>
 
       <nav class="nav-links">
-        <button type="button" class="nav-btn" [class.active]="activeNav() === 'product'"
-          (click)="scrollToSection('hero-section', 'product')">Product</button>
-        <button type="button" class="nav-btn" [class.active]="activeNav() === 'features'"
-          (click)="scrollToSection('interactive-copilot', 'features')">Features</button>
+        <button type="button" class="nav-btn" [class.active]="activeNav() === 'overview'"
+          (click)="scrollToSection('hero-section', 'overview')">Overview</button>
         <button type="button" class="nav-btn" [class.active]="activeNav() === 'demo'"
-          (click)="scrollToSection('demo-preview', 'demo')">Demo</button>
-        <button type="button" class="nav-btn" [class.active]="activeNav() === 'security'"
-          (click)="scrollToSection('security-section', 'security')">Security</button>
+          (click)="scrollToSection('demo-console', 'demo')">Live Engine Demo</button>
+        <button type="button" class="nav-btn" [class.active]="activeNav() === 'architecture'"
+          (click)="scrollToSection('architecture-section', 'architecture')">Architecture</button>
+        <button type="button" class="nav-btn" [class.active]="activeNav() === 'comparison'"
+          (click)="scrollToSection('comparison-section', 'comparison')">Why AutoLedger</button>
         <button type="button" class="nav-btn" [class.active]="activeNav() === 'pricing'"
-          (click)="scrollToSection('cta-section', 'pricing')">Pricing</button>
+          (click)="scrollToSection('pricing-section', 'pricing')">Pricing & ROI</button>
       </nav>
 
       <div class="auth-actions">
         <ng-container *ngIf="!isAuthenticated; else loggedInTpl">
-          <a routerLink="/login" class="btn-signin">Login</a>
-          <a routerLink="/register" class="btn-launch">Register</a>
+          <a routerLink="/login" class="btn-signin">CA Login</a>
+          <a routerLink="/register" class="btn-launch">Launch Free Pilot</a>
         </ng-container>
         <ng-template #loggedInTpl>
-          <a routerLink="/home" class="btn-launch">Go to Console</a>
+          <a routerLink="/home" class="btn-launch">Go to Console →</a>
           <div class="user-avatar" routerLink="/home" title="User Profile">
-            <span class="material-symbols-outlined">person</span>
+            <span class="material-symbols-outlined">account_balance</span>
           </div>
         </ng-template>
       </div>
@@ -49,847 +49,565 @@
         <!-- Pill Badge -->
         <div class="hero-pill">
           <span class="pulse-dot"></span>
-          <span class="pill-text">Next-Gen Fintech • Powered by Autonomous Financial AI</span>
+          <span class="pill-text">🏆 #1 Autonomous Financial Close &amp; Reconciliation Engine</span>
         </div>
 
         <!-- Headline -->
         <h1 class="hero-title">
-          Not Just An Expense Tracker. <br class="hidden-sm" />
-          <span class="gradient-text">Your Personal Financial Operating System.</span>
+          Close Books in Hours, <br class="hidden-sm" />
+          <span class="gradient-text">Not 5–15 Business Days.</span>
         </h1>
 
         <!-- Subheadline -->
         <p class="hero-subtitle">
-          AEQUUS transforms raw banking telemetry into proactive financial intelligence, predictive cash flow
-          trajectories, and autonomous zero-touch budgeting. Know exactly what to do with your capital next.
+          The autonomous reconciliation agent for India's <strong>70,000+ CA firms</strong> and global mid-market enterprises.
+          Ingest raw bank feeds, parse multi-line invoice PDFs with Vision LLMs, and autonomously reconcile thousands of transactions
+          with <strong>99.4% deterministic + fuzzy precision</strong>.
         </p>
 
         <!-- CTA Buttons -->
         <div class="hero-cta-group">
           <button type="button" class="btn-cta-primary group" (click)="handleLaunchApp()">
-            <span>Launch Web App</span>
+            <span>Start Free CA Pilot</span>
             <span class="material-symbols-outlined cta-arrow">arrow_forward</span>
           </button>
-          <button type="button" class="btn-cta-secondary" (click)="scrollToSection('interactive-copilot')">
-            <span class="material-symbols-outlined icon-cyan-filled">play_circle</span>
-            <span>Watch Interactive Tour</span>
+          <button type="button" class="btn-cta-secondary" (click)="scrollToSection('demo-console', 'demo')">
+            <span class="material-symbols-outlined icon-cyan-filled">bolt</span>
+            <span>Simulate Autonomous Match</span>
           </button>
         </div>
 
         <!-- Trust Metric Badges -->
         <div class="trust-grid">
           <div class="trust-card">
-            <span class="material-symbols-outlined trust-icon">lock</span>
+            <span class="material-symbols-outlined trust-icon">schedule</span>
             <div>
-              <div class="trust-title">Bank-Grade 256-Bit</div>
-              <div class="trust-sub">Encrypted Enclaves</div>
+              <div class="trust-title">5–15 Days ➔ 3 Hours</div>
+              <div class="trust-sub">Month-End Close Velocity</div>
             </div>
           </div>
           <div class="trust-card">
-            <span class="material-symbols-outlined trust-icon">verified_user</span>
+            <span class="material-symbols-outlined trust-icon">verified</span>
             <div>
-              <div class="trust-title">Zero Data Selling</div>
-              <div class="trust-sub">Deterministic Privacy</div>
+              <div class="trust-title">99.4% Match Precision</div>
+              <div class="trust-sub">Deterministic + Claude Sonnet</div>
             </div>
           </div>
           <div class="trust-card">
-            <span class="material-symbols-outlined trust-icon">bolt</span>
+            <span class="material-symbols-outlined trust-icon">fingerprint</span>
             <div>
-              <div class="trust-title">Sub-Second Inference</div>
-              <div class="trust-sub">Local Embeddings</div>
+              <div class="trust-title">Cryptographic Audit</div>
+              <div class="trust-sub">SHA-256 Append-Only Log</div>
             </div>
           </div>
           <div class="trust-card">
-            <span class="material-symbols-outlined trust-icon">shield_with_heart</span>
+            <span class="material-symbols-outlined trust-icon">payments</span>
             <div>
-              <div class="trust-title">SOC 2 Type II</div>
-              <div class="trust-sub">Certified Guardrails</div>
+              <div class="trust-title">₹2–5 / Transaction</div>
+              <div class="trust-sub">Usage-Based Metering</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 2. LIVE PRODUCT PREVIEW / INTERACTIVE DASHBOARD FRAME -->
-    <section class="section-container preview-section" id="demo-preview">
+    <!-- 2. LIVE INTERACTIVE RECONCILIATION COMMAND CONSOLE (SIMULATOR) -->
+    <section class="section-container preview-section" id="demo-console">
       <div class="preview-frame">
         <!-- App Chrome Header -->
         <div class="preview-header">
           <div class="preview-title-group">
             <div class="spark-icon-box">
-              <span class="material-symbols-outlined">auto_awesome</span>
+              <span class="material-symbols-outlined">smart_toy</span>
             </div>
             <div>
-              <div class="flex-center-gap">
-                <span class="preview-console-title">Financial Console</span>
-                <span class="telemetry-badge">Live Telemetry</span>
+              <h2 class="preview-title">Aequus Reconciliation Command Center</h2>
+              <div class="preview-status">
+                <span class="status-indicator"></span>
+                <span>Live Telemetry Engine • Java 21 Spring Boot + Multimodal AI</span>
               </div>
-              <p class="preview-console-subtitle">
-                Good morning, Alex. At this trajectory, you'll accumulate <strong class="text-cyan">$8,400 in net
-                  surplus</strong> this fiscal year.
-              </p>
             </div>
           </div>
 
-          <!-- Controls -->
-          <div class="timeframe-controls">
-            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Weekly'"
-              (click)="setTimeframe('Weekly')">Weekly</button>
-            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Monthly'"
-              (click)="setTimeframe('Monthly')">Monthly</button>
-            <button type="button" class="timeframe-btn" [class.active]="selectedTimeframe() === 'Yearly'"
-              (click)="setTimeframe('Yearly')">Yearly</button>
-            <button type="button" class="timeframe-tune" title="Filter Settings">
-              <span class="material-symbols-outlined">tune</span>
+          <div class="preview-actions">
+            <!-- Client Selector Tabs -->
+            <div class="client-tabs">
+              <button
+                type="button"
+                *ngFor="let client of clients"
+                class="client-tab-btn"
+                [class.active]="selectedClientId() === client.id"
+                (click)="selectClient(client.id)"
+              >
+                {{ client.name.split(' ')[0] }}
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="btn-run-match"
+              [disabled]="isSimulating()"
+              (click)="runAutonomousMatching()"
+            >
+              <span class="material-symbols-outlined spin-icon" *ngIf="isSimulating()">sync</span>
+              <span class="material-symbols-outlined" *ngIf="!isSimulating()">bolt</span>
+              <span>{{ isSimulating() ? 'Reconciling...' : 'Run Autonomous Match' }}</span>
             </button>
           </div>
         </div>
 
-        <!-- 3 KPI Cards Row -->
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-card-top">
-              <span>Total Cash Inflow</span>
-              <span class="kpi-badge-positive">
-                <span class="material-symbols-outlined icon-sm">trending_up</span> +14.2%
-              </span>
-            </div>
-            <div class="kpi-value">₹1,42,800</div>
-            <div class="kpi-sub">vs ₹1,25,000 baseline</div>
+        <!-- Simulation Progress Bar -->
+        <div class="simulation-banner" *ngIf="isSimulating() || simulationProgress() < 100">
+          <div class="simulation-status-text">
+            <span class="pulse-dot-sm"></span>
+            <span>{{ simulationStep() }}</span>
           </div>
-
-          <div class="kpi-card">
-            <div class="kpi-card-top">
-              <span>Total Outflow (Burn)</span>
-              <span class="kpi-badge-neutral">-3.4% MoM</span>
-            </div>
-            <div class="kpi-value">₹48,200</div>
-            <div class="kpi-sub">₹14,200 under allocation limit</div>
-          </div>
-
-          <div class="kpi-card kpi-card-glow">
-            <div class="kpi-orb-bg"></div>
-            <div class="kpi-card-top text-cyan-light">
-              <span>Net Capital Buffer</span>
-              <span class="ping-dot"></span>
-            </div>
-            <div class="kpi-value text-cyan">+₹94,600</div>
-            <div class="kpi-sub text-cyan-dim">Autonomous sweep queued • 2d</div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" [style.width.%]="simulationProgress()"></div>
           </div>
         </div>
 
-        <!-- Main Chart + Side Modules Grid -->
-        <div class="chart-side-grid">
-          <!-- Central Visualizer -->
-          <div class="chart-card">
-            <div class="chart-header">
-              <div>
-                <span class="chart-label">Predictive Cash Inflows vs Discretionary Burn</span>
-                <div class="chart-amount">₹28,165 <span class="chart-peer">▲ 8.3% vs peer percentile</span></div>
-              </div>
-              <div class="chart-legend">
-                <div class="legend-item"><span class="legend-dot bg-gray"></span> Historical</div>
-                <div class="legend-item"><span class="legend-dot bg-cyan"></span> Model Peak</div>
-              </div>
-            </div>
-
-            <!-- SVG Bar Chart -->
-            <div class="svg-chart-container">
-              <svg class="svg-chart" viewBox="0 0 760 200" preserveAspectRatio="none" fill="none">
-                <!-- Grid baselines -->
-                <line x1="0" y1="40" x2="760" y2="40" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3">
-                </line>
-                <line x1="0" y1="100" x2="760" y2="100" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3">
-                </line>
-                <line x1="0" y1="160" x2="760" y2="160" stroke="#313637" stroke-width="0.75" stroke-dasharray="3 3">
-                </line>
-
-                <!-- Bars for 12 months -->
-                <!-- Jul -->
-                <rect x="25" y="65" width="30" height="115" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="28" y1="65" x2="52" y2="65" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round"></line>
-
-                <!-- Aug -->
-                <rect x="88" y="110" width="30" height="70" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="91" y1="110" x2="115" y2="110" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Sep (ACTIVE HIGHLIGHT) -->
-                <g filter="drop-shadow(0px 0px 14px rgba(0,247,255,0.45))">
-                  <rect x="151" y="45" width="32" height="135" rx="6" fill="url(#cyanGlowGrad)"></rect>
-                  <line x1="154" y1="45" x2="180" y2="45" stroke="#ffffff" stroke-width="3" stroke-linecap="round">
-                  </line>
-                </g>
-
-                <!-- Oct -->
-                <rect x="214" y="75" width="30" height="105" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="217" y1="75" x2="241" y2="75" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Nov -->
-                <rect x="277" y="105" width="30" height="75" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="280" y1="105" x2="304" y2="105" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Dec -->
-                <rect x="340" y="38" width="30" height="142" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="343" y1="38" x2="367" y2="38" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Jan -->
-                <rect x="403" y="125" width="30" height="55" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="406" y1="125" x2="430" y2="125" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Feb -->
-                <rect x="466" y="82" width="30" height="98" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="469" y1="82" x2="493" y2="82" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Mar -->
-                <rect x="529" y="95" width="30" height="85" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="532" y1="95" x2="556" y2="95" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Apr -->
-                <rect x="592" y="42" width="30" height="138" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="595" y1="42" x2="619" y2="42" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- May -->
-                <rect x="655" y="112" width="30" height="68" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="658" y1="112" x2="682" y2="112" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Jun -->
-                <rect x="718" y="70" width="30" height="110" rx="6" fill="#1b2021" stroke="#313637" stroke-width="1.5">
-                </rect>
-                <line x1="721" y1="70" x2="745" y2="70" stroke="#bfc8ca" stroke-width="2.5" stroke-linecap="round">
-                </line>
-
-                <!-- Tooltip on top of Sep -->
-                <rect x="144" y="18" width="46" height="20" rx="4" fill="#003739"></rect>
-                <text x="167" y="32" fill="#54f8ff" font-family="Geist" font-size="10" font-weight="600"
-                  text-anchor="middle">▲ +12%</text>
-
-                <!-- Gradient Definition -->
-                <defs>
-                  <linearGradient id="cyanGlowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#54f8ff"></stop>
-                    <stop offset="100%" stop-color="#006d71"></stop>
-                  </linearGradient>
-                </defs>
-              </svg>
-
-              <!-- Month labels -->
-              <div class="month-labels-grid">
-                <span>Jul</span><span>Aug</span><span class="active-month">Sep</span><span>Oct</span>
-                <span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span>
-                <span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
-              </div>
-            </div>
-
-            <!-- Callout Pills -->
-            <div class="callout-pill-group">
-              <div class="callout-pill">
-                <span class="text-cyan">⚡ Anomaly:</span> High utility spike ($210 vs avg $80) detected on 14th.
-              </div>
-              <div class="callout-pill">
-                <span class="text-cyan-light">🔮 Forecast:</span> Checking balance will safely retain $3,400 reserve at
-                month-end.
-              </div>
-            </div>
+        <!-- Live Metrics Bar for Selected Client -->
+        <div class="client-overview-bar">
+          <div class="client-info-col">
+            <span class="client-label">Active Client Portfolio</span>
+            <strong class="client-val">{{ selectedClient().name }}</strong>
+            <small class="client-sub">{{ selectedClient().industry }} • GSTIN: {{ selectedClient().gstin }}</small>
           </div>
 
-          <!-- Calendar & Spending Breakdown Side (4 cols) -->
-          <div class="side-modules-col">
-            <!-- Calendar Schedule Widget -->
-            <div class="calendar-card">
-              <div class="calendar-header">
-                <span class="calendar-title">Billing Schedule</span>
-                <span class="calendar-date">Jan 2026</span>
-              </div>
-              <div class="calendar-days-header">
-                <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
-              </div>
-              <div class="calendar-dates-grid">
-                <span class="dim-date">29</span><span class="dim-date">30</span><span class="dim-date">31</span>
-                <span>1</span><span>2</span><span>3</span><span>4</span>
-                <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
-                <span class="active-date">11</span>
-                <span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span>
-              </div>
-              <div class="calendar-footer">
-                <span class="text-muted">Upcoming auto-sweep:</span>
-                <span class="text-cyan font-bold">₹1,434 (AWS Cloud)</span>
-              </div>
+          <div class="stat-pills-row">
+            <div class="stat-mini-card">
+              <span class="stat-mini-label">Ingested Volume</span>
+              <span class="stat-mini-val text-cyan">{{ selectedClient().volume }}</span>
             </div>
-
-            <!-- Spending Radial Donut Widget -->
-            <div class="donut-card">
-              <div class="donut-svg-wrapper">
-                <svg class="donut-svg" viewBox="0 0 36 36">
-                  <!-- Background Track -->
-                  <path class="donut-track"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
-                    stroke-width="4.5"></path>
-                  <!-- Segments -->
-                  <path class="donut-segment-1"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
-                    stroke-dasharray="45, 100" stroke-width="4.5"></path>
-                  <path class="donut-segment-2"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
-                    stroke-dasharray="25, 100" stroke-dashoffset="-45" stroke-width="4.5"></path>
-                  <path class="donut-segment-3"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
-                    stroke-dasharray="15, 100" stroke-dashoffset="-70" stroke-width="4.5"></path>
-                </svg>
-                <div class="donut-center-label">
-                  <span class="donut-center-val">₹28k</span>
-                  <span class="donut-center-sub">Allocated</span>
-                </div>
-              </div>
-
-              <div class="donut-legend-list">
-                <div class="donut-legend-item">
-                  <span class="flex-center-gap"><span class="legend-dot bg-cyan"></span> Cloud Services</span>
-                  <span class="legend-val">45%</span>
-                </div>
-                <div class="donut-legend-item">
-                  <span class="flex-center-gap"><span class="legend-dot bg-secondary"></span> Logistics</span>
-                  <span class="legend-val">25%</span>
-                </div>
-                <div class="donut-legend-item">
-                  <span class="flex-center-gap"><span class="legend-dot bg-outline"></span> Office Tech</span>
-                  <span class="legend-val">15%</span>
-                </div>
-                <div class="donut-legend-item text-muted">
-                  <span class="flex-center-gap"><span class="legend-dot bg-muted"></span> Discretionary</span>
-                  <span>15%</span>
-                </div>
-              </div>
+            <div class="stat-mini-card">
+              <span class="stat-mini-label">Transactions</span>
+              <span class="stat-mini-val">{{ selectedClient().txCount | number }}</span>
+            </div>
+            <div class="stat-mini-card">
+              <span class="stat-mini-label">Autonomous Match</span>
+              <span class="stat-mini-val text-success">{{ selectedClient().matchRate }}%</span>
+            </div>
+            <div class="stat-mini-card">
+              <span class="stat-mini-label">Flagged Anomalies</span>
+              <span class="stat-mini-val text-warning">{{ selectedClient().anomalies }}</span>
             </div>
           </div>
         </div>
 
-        <!-- Conversational Strip At Bottom Of Preview -->
-        <div class="preview-copilot-strip">
-          <div class="copilot-query-wrap">
-            <span class="material-symbols-outlined icon-cyan">chat_bubble</span>
-            <span class="copilot-query-text">
-              <span class="text-muted font-mono">User asks:</span> “Can I afford a MacBook next month?”
-              <span class="text-cyan-dim ml-1">→ “Yes. Trim dining by $50/wk for 6 weeks, no emergency buffer
-                touched.”</span>
+        <!-- Filter Navigation -->
+        <div class="console-filter-bar">
+          <div class="filter-tabs">
+            <button
+              type="button"
+              class="filter-tab"
+              [class.active]="activeFilter() === 'ALL'"
+              (click)="setFilter('ALL')"
+            >
+              All Transactions ({{ allRecords.length }})
+            </button>
+            <button
+              type="button"
+              class="filter-tab"
+              [class.active]="activeFilter() === 'MATCHED'"
+              (click)="setFilter('MATCHED')"
+            >
+              <span class="badge-dot-green"></span>
+              Auto-Matched (4)
+            </button>
+            <button
+              type="button"
+              class="filter-tab"
+              [class.active]="activeFilter() === 'REVIEW'"
+              (click)="setFilter('REVIEW')"
+            >
+              <span class="badge-dot-yellow"></span>
+              Needs CA Review (1)
+            </button>
+            <button
+              type="button"
+              class="filter-tab"
+              [class.active]="activeFilter() === 'ANOMALY'"
+              (click)="setFilter('ANOMALY')"
+            >
+              <span class="badge-dot-red"></span>
+              Anomalies (1)
+            </button>
+          </div>
+
+          <div class="console-tools">
+            <span class="engine-badge">
+              <span class="material-symbols-outlined icon-sm">shield</span>
+              Append-Only Audit Enclave
             </span>
           </div>
-          <span class="copilot-active-badge">Autonomous Copilot Active</span>
+        </div>
+
+        <!-- Interactive Matching Telemetry Stream Table -->
+        <div class="table-container">
+          <table class="telemetry-table">
+            <thead>
+              <tr>
+                <th>Tx ID / Date</th>
+                <th>Bank Narration &amp; Telemetry</th>
+                <th>Amount</th>
+                <th>Matched Invoice &amp; Vendor</th>
+                <th>Confidence &amp; Logic</th>
+                <th>Status</th>
+                <th>Audit Hash</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of filteredRecords()" [class.row-anomaly]="row.status === 'ANOMALY'" [class.row-review]="row.status === 'REVIEW'">
+                <td>
+                  <div class="tx-cell">
+                    <strong class="font-mono text-cyan">{{ row.id }}</strong>
+                    <small class="text-muted">{{ row.date }}</small>
+                  </div>
+                </td>
+                <td>
+                  <div class="narration-cell">
+                    <span class="narration-text">{{ row.bankNarration }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="amount-val" [class.text-debit]="row.isDebit" [class.text-credit]="!row.isDebit">
+                    {{ row.isDebit ? '-' : '+' }}₹{{ row.bankAmount | number:'1.2-2' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="vendor-cell" *ngIf="row.vendorName">
+                    <strong class="vendor-name">{{ row.vendorName }}</strong>
+                    <span class="invoice-tag font-mono" *ngIf="row.invoiceNo">{{ row.invoiceNo }}</span>
+                  </div>
+                  <span class="text-muted italic" *ngIf="!row.vendorName">No invoice found in GL</span>
+                </td>
+                <td>
+                  <div class="confidence-cell">
+                    <div class="confidence-pill" [ngClass]="{
+                      'pill-exact': row.matchType === 'EXACT_RULE',
+                      'pill-fuzzy': row.matchType === 'LLM_FUZZY',
+                      'pill-split': row.matchType === 'MULTI_SPLIT',
+                      'pill-anomaly': row.matchType === 'ANOMALY_DUPLICATE',
+                      'pill-unmatched': row.matchType === 'UNMATCHED'
+                    }">
+                      <span *ngIf="row.matchType === 'EXACT_RULE'">⚡ Exact Rule ({{ row.confidence }}%)</span>
+                      <span *ngIf="row.matchType === 'LLM_FUZZY'">🧠 Claude Sonnet ({{ row.confidence }}%)</span>
+                      <span *ngIf="row.matchType === 'MULTI_SPLIT'">🔀 Multi-Split ({{ row.confidence }}%)</span>
+                      <span *ngIf="row.matchType === 'ANOMALY_DUPLICATE'">⚠️ Duplicate Flag ({{ row.confidence }}%)</span>
+                      <span *ngIf="row.matchType === 'UNMATCHED'">❓ Unmatched ({{ row.confidence }}%)</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-chip chip-matched" *ngIf="row.status === 'MATCHED'">
+                    <span class="material-symbols-outlined icon-xs">check_circle</span> Reconciled
+                  </span>
+                  <span class="status-chip chip-review" *ngIf="row.status === 'REVIEW'">
+                    <span class="material-symbols-outlined icon-xs">pending</span> CA Review
+                  </span>
+                  <span class="status-chip chip-anomaly" *ngIf="row.status === 'ANOMALY'">
+                    <span class="material-symbols-outlined icon-xs">warning</span> Duplicate Pay
+                  </span>
+                </td>
+                <td>
+                  <span class="audit-hash font-mono">{{ row.auditHash }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Console Footer CTA -->
+        <div class="console-footer">
+          <div class="console-footer-text">
+            <span>✨ <strong>Continuous Learning:</strong> Every CA adjustment refines client-specific matching heuristics.</span>
+          </div>
+          <button type="button" class="btn-console-cta" (click)="handleLaunchApp()">
+            Deploy Aequus For Your Firm →
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- 3. THE PROBLEM VS. THE AEQUUS PARADIGM SHIFT -->
-    <section class="section-container" id="paradigm-section">
+    <!-- 3. WHY AUTONOMOUS CLOSE WINS (PARADIGM SHIFT) -->
+    <section class="section-container" id="comparison-section">
       <div class="section-header-center">
-        <span class="section-tagline">Paradigm Inversion</span>
-        <h2 class="section-heading">Why Legacy Budgeting Dies In 90 Days.</h2>
+        <span class="section-tagline">Paradigm Shift</span>
+        <h2 class="section-heading">Why The Legacy Month-End Close Is Broken.</h2>
         <p class="section-description">
-          Traditional finance apps punish you with homework. AEQUUS eliminates manual friction with a mathematical,
-          autonomous intelligence layer.
+          Mid-market finance teams spend 15 days a month copying spreadsheet cells. Aequus compresses the entire lifecycle into an automated background pipeline.
         </p>
       </div>
 
       <div class="comparison-grid">
-        <!-- Legacy Card -->
-        <div class="comparison-card legacy-card">
-          <div>
-            <div class="comparison-card-top">
-              <span class="comparison-card-title text-dim">Traditional Budgeting Apps</span>
-              <span class="badge-past">The Past</span>
-            </div>
-            <ul class="comparison-list">
-              <li class="comparison-item">
-                <span class="material-symbols-outlined icon-error">close</span>
-                <div>
-                  <strong class="item-title">Tedious Manual Input:</strong>
-                  <p class="item-desc">Forced receipt uploads and correcting wrong categories every evening.</p>
-                </div>
-              </li>
-              <li class="comparison-item">
-                <span class="material-symbols-outlined icon-error">close</span>
-                <div>
-                  <strong class="item-title">Rigid, Unrealistic Categories:</strong>
-                  <p class="item-desc">Break your budget once on groceries and the entire monthly tracker is
-                    invalidated.</p>
-                </div>
-              </li>
-              <li class="comparison-item">
-                <span class="material-symbols-outlined icon-error">close</span>
-                <div>
-                  <strong class="item-title">Passive Rear-View Mirror Charts:</strong>
-                  <p class="item-desc">Shows you what you already overspent last week with zero proactive remediation.
-                  </p>
-                </div>
-              </li>
-              <li class="comparison-item">
-                <span class="material-symbols-outlined icon-error">close</span>
-                <div>
-                  <strong class="item-title">Data Selling & Junk Offers:</strong>
-                  <p class="item-desc">Monetizing your transaction feed with intrusive high-interest loan banners.</p>
-                </div>
-              </li>
-            </ul>
+        <!-- Old Way Card -->
+        <div class="comp-card legacy-card">
+          <div class="comp-header">
+            <span class="comp-badge-legacy">Legacy Close Process</span>
+            <h3>Manual Accountant Grind</h3>
           </div>
-          <div class="comparison-footer text-muted">
-            Outcome: Abandoned in under 90 days due to friction fatigue.
-          </div>
+          <ul class="comp-list">
+            <li>
+              <span class="material-symbols-outlined icon-bad">close</span>
+              <div>
+                <strong>5–15 Business Days:</strong> Teams of 3–8 accountants manually cross-referencing bank statements against invoices.
+              </div>
+            </li>
+            <li>
+              <span class="material-symbols-outlined icon-bad">close</span>
+              <div>
+                <strong>Spreadsheet Human Error:</strong> Missed duplicates, vendor name variances, and currency conversion drift.
+              </div>
+            </li>
+            <li>
+              <span class="material-symbols-outlined icon-bad">close</span>
+              <div>
+                <strong>Month-End Audit Panic:</strong> Frantic scramble to find missing invoice PDFs and explain ledger discrepancies.
+              </div>
+            </li>
+            <li>
+              <span class="material-symbols-outlined icon-bad">close</span>
+              <div>
+                <strong>Delayed Executive Decisions:</strong> CFO receives cash flow reports 3 weeks after month-end.
+              </div>
+            </li>
+          </ul>
         </div>
 
-        <!-- AEQUUS Paradigm Card (Glowing Cyan Highlight) -->
-        <div class="comparison-card aequus-card">
-          <div class="card-ambient-glow"></div>
-          <div>
-            <div class="comparison-card-top">
-              <span class="comparison-card-title text-cyan">AEQUUS Financial OS</span>
-              <span class="badge-future">The Future</span>
-            </div>
-            <ul class="comparison-list">
-              <li class="comparison-item">
-                <span class="material-symbols-outlined icon-cyan-filled">check_circle</span>
-                <div>
-                  <strong class="item-title text-primary">Autonomous Multimodal Telemetry:</strong>
-                  <p class="item-desc">Zero-touch parsing of merchants, receipts, and line-item taxes with precision OCR
-                    vision.</p>
-                </div>
-              </li>
-              <li class="comparison-item">
-                <span class="material-symbols-outlined icon-cyan-filled">check_circle</span>
-                <div>
-                  <strong class="item-title text-primary">Dynamic Auto-Rebalancing:</strong>
-                  <p class="item-desc">Unexpected bills don't wreck your budget; the engine fluidly recalculates
-                    flexible categories.</p>
-                </div>
-              </li>
-              <li class="comparison-item">
-                <span class="material-symbols-outlined icon-cyan-filled">check_circle</span>
-                <div>
-                  <strong class="item-title text-primary">Predictive 30-Day Forward Trajectory:</strong>
-                  <p class="item-desc">Anticipates your liquidity reserves before expenses hit, protecting your
-                    long-term wealth.</p>
-                </div>
-              </li>
-              <li class="comparison-item">
-                <span class="material-symbols-outlined icon-cyan-filled">check_circle</span>
-                <div>
-                  <strong class="item-title text-primary">Deterministic Zero-Knowledge Privacy:</strong>
-                  <p class="item-desc">Your balance never leaves secure enclaves. Zero affiliate junk, zero tracking.
-                  </p>
-                </div>
-              </li>
-            </ul>
+        <!-- Aequus Way Card -->
+        <div class="comp-card aequus-card">
+          <div class="comp-header">
+            <span class="comp-badge-aequus">Aequus Autonomous Engine</span>
+            <h3>Zero-Touch Continuous Close</h3>
           </div>
-          <div class="comparison-footer text-cyan flex-center-gap">
-            <span class="pulse-dot"></span>
-            Outcome: Sustained wealth compounding through autonomous discipline.
-          </div>
+          <ul class="comp-list">
+            <li>
+              <span class="material-symbols-outlined icon-good">check_circle</span>
+              <div>
+                <strong>Sub-3-Hour Automated Close:</strong> Continuous ingestion of banking data and vendor invoice PDFs.
+              </div>
+            </li>
+            <li>
+              <span class="material-symbols-outlined icon-good">check_circle</span>
+              <div>
+                <strong>99.4% Multi-Layer Precision:</strong> Exact rule matching + Claude Sonnet fuzzy alignment on multi-line items.
+              </div>
+            </li>
+            <li>
+              <span class="material-symbols-outlined icon-good">check_circle</span>
+              <div>
+                <strong>Instant Immutable Audit Trail:</strong> Every single match has a cryptographic SHA-256 proof and human approval log.
+              </div>
+            </li>
+            <li>
+              <span class="material-symbols-outlined icon-good">check_circle</span>
+              <div>
+                <strong>Real-Time Cash Visibility:</strong> CFOs and CAs monitor closing readiness live throughout the month.
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- 4. THE 4 KILLER AI CORE CAPABILITIES (Bento Grid) -->
-    <section class="section-container" id="interactive-copilot">
+    <!-- 4. SYSTEM ARCHITECTURE & 4-LAYER ENGINE -->
+    <section class="section-container" id="architecture-section">
       <div class="section-header-left">
-        <span class="section-tagline">Engine Micro-Architecture</span>
-        <h2 class="section-heading">Four Autonomous Superpowers.</h2>
+        <span class="section-tagline">Engineering Deep Dive</span>
+        <h2 class="section-heading">Four Layers of Autonomous Precision.</h2>
         <p class="section-description">
-          Engineered on custom Retrieval-Augmented Generation pipelines and deterministic mathematical solvers.
+          Built with Java 21 Spring Boot for high-throughput enterprise durability, coupled with specialized multimodal LLMs.
         </p>
       </div>
 
-      <div class="bento-grid">
-        <!-- Card 1: Conversational Financial Advisor -->
-        <div class="bento-card">
-          <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box">
-                <span class="material-symbols-outlined">forum</span>
-              </div>
-              <div>
-                <h3 class="bento-card-title">Conversational Advisor</h3>
-                <span class="bento-tag">Private RAG • In-Memory Numerical Embeddings</span>
-              </div>
-            </div>
-            <p class="bento-desc">
-              Ask natural language capital allocation questions. The copilot cross-analyzes recurrent cash flows,
-              upcoming liabilities, and yield accounts in real time.
-            </p>
-            <!-- Chat Transcript Box -->
-            <div class="mockup-box">
-              <div class="chat-row">
-                <span class="chat-user-badge">User</span>
-                <p class="chat-text-user">“Can I buy a $1,200 MacBook Pro next month?”</p>
-              </div>
-              <div class="chat-row border-top">
-                <span class="chat-aequus-badge">Aequus</span>
-                <p class="chat-text-aequus">
-                  “Yes. Based on your current cash velocity, if you adjust your dining budget down by <strong>$50/week
-                    for 6 weeks</strong>, your emergency reserve remains 100% intact.”
-                </p>
-              </div>
-            </div>
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <span class="material-symbols-outlined">document_scanner</span>
           </div>
-          <div class="bento-footer">
-            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Zero PII transmitted to external
-            foundation models
-          </div>
-        </div>
-
-        <!-- Card 2: Receipt Vision & Auto-Categorization -->
-        <div class="bento-card">
-          <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box">
-                <span class="material-symbols-outlined">document_scanner</span>
-              </div>
-              <div>
-                <h3 class="bento-card-title">Auto-Vision Extraction</h3>
-                <span class="bento-tag">Sub-Second OCR • Line-Item Tax Decomposition</span>
-              </div>
-            </div>
-            <p class="bento-desc">
-              Simply drop an invoice or receipt screenshot. Neural vision parses merchant metadata, subtotal, tax
-              breakdown, and routes to double-entry general ledger books.
-            </p>
-            <!-- Visual parsed receipt card -->
-            <div class="mockup-box">
-              <div class="receipt-header">
-                <span class="receipt-title">
-                  <span class="material-symbols-outlined icon-cyan icon-sm">receipt_long</span> STARBUCKS RESERVE #402
-                </span>
-                <span class="badge-routed">Auto-Routed</span>
-              </div>
-              <div class="receipt-grid">
-                <div>Subtotal: <span class="text-primary">$18.40</span></div>
-                <div>Sales Tax (8.25%): <span class="text-primary">$1.52</span></div>
-                <div>Category: <span class="text-cyan">Client Entertainment</span></div>
-                <div>Ledger: <span class="text-primary">Checking #0921</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="bento-footer">
-            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> 99.8% first-pass accuracy across 42
-            currencies
-          </div>
-        </div>
-
-        <!-- Card 3: Predictive Cash Flow & Anomaly Detection -->
-        <div class="bento-card">
-          <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box">
-                <span class="material-symbols-outlined">timeline</span>
-              </div>
-              <div>
-                <h3 class="bento-card-title">Predictive Anomaly Engine</h3>
-                <span class="bento-tag">Monte Carlo Simulation • Recurring Drift Alerts</span>
-              </div>
-            </div>
-            <p class="bento-desc">
-              Simulates 10,000 future liquidity outcomes over rolling 30-day windows. Instantly flags hidden
-              subscription crept price hikes before execution.
-            </p>
-            <!-- Forecast Curve Sparkline Visual -->
-            <div class="mockup-box">
-              <div class="sparkline-header">
-                <span>30-Day Liquidity Corridor</span>
-                <span class="text-cyan font-bold">Safe Lower Bound: $4,200</span>
-              </div>
-              <svg class="sparkline-svg" viewBox="0 0 300 60" fill="none">
-                <path d="M0 45 C 50 40, 100 25, 150 30 C 200 35, 250 15, 300 10" stroke="#00f7ff" stroke-width="2">
-                </path>
-                <path d="M0 45 C 50 40, 100 25, 150 30 C 200 35, 250 15, 300 10 L 300 60 L 0 60 Z" fill="url(#blueFade)"
-                  opacity="0.15"></path>
-                <circle cx="150" cy="30" r="4" fill="#54f8ff"></circle>
-                <defs>
-                  <linearGradient id="blueFade" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#00f7ff"></stop>
-                    <stop offset="100%" stop-color="#00f7ff" stop-opacity="0"></stop>
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-          </div>
-          <div class="bento-footer">
-            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Proactive notice 5 days prior to
-            recurring debits
-          </div>
-        </div>
-
-        <!-- Card 4: Dynamic Budget Rebalancing -->
-        <div class="bento-card">
-          <div>
-            <div class="bento-card-top">
-              <div class="bento-icon-box">
-                <span class="material-symbols-outlined">balance</span>
-              </div>
-              <div>
-                <h3 class="bento-card-title">Autonomous Auto-Balance</h3>
-                <span class="bento-tag">Self-Healing Categories • Goal Protection</span>
-              </div>
-            </div>
-            <p class="bento-desc">
-              When an unexpected $500 car maintenance bill hits, the OS doesn't sound alarms. It algorithmically reduces
-              micro-discretionary categories so monthly wealth targets remain untouched.
-            </p>
-            <!-- Rebalancing interactive simulation widget -->
-            <div class="mockup-box">
-              <div class="rebalance-header">
-                <span class="shock-text"><span class="red-dot"></span> Shock: +$520 Unplanned Repair</span>
-                <span class="text-cyan">Absorbed (100%)</span>
-              </div>
-              <div class="rebalance-bar-bg">
-                <div class="bar-cyan" style="width: 66.6%;"></div>
-                <div class="bar-dim" style="width: 33.4%;"></div>
-              </div>
-              <div class="rebalance-footer-stats">
-                <span>Leisure: -$200</span>
-                <span>Subscriptions: -$70</span>
-                <span>Dining: -$250</span>
-              </div>
-            </div>
-          </div>
-          <div class="bento-footer">
-            <span class="material-symbols-outlined icon-cyan icon-sm">check</span> Guaranteed retirement and savings
-            contribution lock
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. THE THREE ARCHITECTURAL PILLARS -->
-    <section class="section-container" id="pillars-section">
-      <div class="pillars-card">
-        <div class="section-header-left">
-          <span class="section-tagline">Foundation Blueprint</span>
-          <h2 class="section-heading">The Three Pillars of Financial Equilibrium.</h2>
-        </div>
-        <div class="pillars-grid">
-          <!-- Pillar 1 -->
-          <div class="pillar-col">
-            <div class="pillar-number">01</div>
-            <h3 class="pillar-title">Financial Management</h3>
-            <p class="pillar-desc">
-              The immutable core. Double-entry general ledger architecture, real-time multi-currency syncing across
-              global institutions, and high-frequency reconciliation with zero floating point drift.
-            </p>
-            <ul class="pillar-feature-list">
-              <li class="pillar-feature-item"><span class="cyan-bullet"></span> Multi-vault balance segregation</li>
-              <li class="pillar-feature-item"><span class="cyan-bullet"></span> Real-time FX telemetry</li>
-            </ul>
-          </div>
-          <!-- Pillar 2 -->
-          <div class="pillar-col">
-            <div class="pillar-number">02</div>
-            <h3 class="pillar-title">Financial Intelligence</h3>
-            <p class="pillar-desc">
-              Continuous vector-based statistical evaluation. Cash velocity monitoring, capital-at-risk stress
-              simulations, and autonomous wealth-health scoring that updates after every transaction.
-            </p>
-            <ul class="pillar-feature-list">
-              <li class="pillar-feature-item"><span class="cyan-bullet"></span> Spending velocity alerts</li>
-              <li class="pillar-feature-item"><span class="cyan-bullet"></span> Tax-loss harvesting sensors</li>
-            </ul>
-          </div>
-          <!-- Pillar 3 -->
-          <div class="pillar-col">
-            <div class="pillar-number">03</div>
-            <h3 class="pillar-title">Autonomous Copilot</h3>
-            <p class="pillar-desc">
-              Zero-friction guidance. Natural conversational execution, automated morning liquidity briefs, and instant
-              simulation of life capital decisions without ever opening a spreadsheet.
-            </p>
-            <ul class="pillar-feature-list">
-              <li class="pillar-feature-item"><span class="cyan-bullet"></span> Context-aware query answers</li>
-              <li class="pillar-feature-item"><span class="cyan-bullet"></span> One-tap reallocation approvals</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. ENTERPRISE-GRADE SECURITY & MODULAR MONOLITH -->
-    <section class="section-container" id="security-section">
-      <div class="security-grid">
-        <div class="security-text-col">
-          <span class="section-tagline">Zero-Compromise Security</span>
-          <h2 class="section-heading">
-            Institutional Custody Standard. <br class="hidden-sm" />
-            Zero PII In Large Language Models.
-          </h2>
-          <p class="section-description">
-            Aequus is engineered under strict Domain-Driven Design (DDD) principles. Financial logic executes
-            deterministically in hardened Rust backends, while conversational models receive only isolated, anonymized
-            mathematical vectors.
+          <div class="feature-badge">Layer 1 • Ingestion</div>
+          <h3 class="feature-title">Multimodal Vision OCR</h3>
+          <p class="feature-desc">
+            Directly extracts line items, GSTIN, HSN/SAC codes, discount splits, and payment terms from scanned PDF invoices and bank statements with zero manual templating.
           </p>
-          <div class="security-features-row">
-            <div class="security-feature-card">
-              <div class="security-feature-title">
-                <span class="material-symbols-outlined icon-cyan">vpn_key</span> Client-Side Key Generation
-              </div>
-              <p class="security-feature-desc">Your encryption keys are derived on your physical device, rendering
-                server-side leaks mathematically impossible.</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <span class="material-symbols-outlined">hub</span>
+          </div>
+          <div class="feature-badge">Layer 2 • Spring Boot</div>
+          <h3 class="feature-title">Deterministic Rule Engine</h3>
+          <p class="feature-desc">
+            Processes 50,000+ transactions/sec in pure Java. Handles exact reference matching, date tolerance corridors, and standard bank narration normalization in single-digit milliseconds.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <span class="material-symbols-outlined">psychology</span>
+          </div>
+          <div class="feature-badge">Layer 3 • Reasoning</div>
+          <h3 class="feature-title">LLM Fuzzy Alignment</h3>
+          <p class="feature-desc">
+            Claude 3.5 Sonnet resolves complex multi-invoice batch payments, vendor name aliases, TDS deductions, and partial remittances that traditional rule engines fail on.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <span class="material-symbols-outlined">verified_user</span>
+          </div>
+          <div class="feature-badge">Layer 4 • Compliance</div>
+          <h3 class="feature-title">Immutable Audit Trail</h3>
+          <p class="feature-desc">
+            Every match, variance explanation, and human sign-off is committed to an append-only ledger with cryptographic hash chains ready for external statutory audits.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. USAGE-BASED PRICING & ROI CALCULATOR -->
+    <section class="section-container" id="pricing-section">
+      <div class="section-header-center">
+        <span class="section-tagline">Predictable ROI</span>
+        <h2 class="section-heading">Usage-Based Pricing. Pay Only For What You Match.</h2>
+        <p class="section-description">
+          No margin-killing flat-rate locks. Align software spend directly with transaction volume reconciled.
+        </p>
+      </div>
+
+      <div class="pricing-calculator-card">
+        <div class="calc-left">
+          <div class="calc-slider-group">
+            <div class="slider-header">
+              <label for="txRange">Monthly Reconciled Transactions</label>
+              <span class="slider-display text-cyan font-mono">{{ txVolume() | number }} / mo</span>
             </div>
-            <div class="security-feature-card">
-              <div class="security-feature-title">
-                <span class="material-symbols-outlined icon-cyan">dataset</span> Anonymized Vector RAG
-              </div>
-              <p class="security-feature-desc">Account numbers, names, and identifiers are stripped before inference
-                queries touch GPU clusters.</p>
+            <input
+              type="range"
+              id="txRange"
+              min="5000"
+              max="200000"
+              step="5000"
+              [ngModel]="txVolume()"
+              (ngModelChange)="txVolume.set($event)"
+              class="range-slider"
+            />
+            <div class="slider-limits">
+              <span>5,000 (Small Firm)</span>
+              <span>50,000 (Mid-Market)</span>
+              <span>200,000+ (Large CA Network)</span>
+            </div>
+          </div>
+
+          <div class="calc-metrics-grid">
+            <div class="calc-metric-box">
+              <span class="calc-metric-title">Unit Rate</span>
+              <strong class="calc-metric-value">₹{{ ratePerTx() }} <small>/ match</small></strong>
+              <small class="text-muted">($0.035 USD)</small>
+            </div>
+            <div class="calc-metric-box">
+              <span class="calc-metric-title">Accountant Hours Saved</span>
+              <strong class="calc-metric-value text-success">{{ hoursSavedPerMonth() }} hrs</strong>
+              <small class="text-muted">~{{ (hoursSavedPerMonth() / 160) | number:'1.1-1' }} full-time roles</small>
             </div>
           </div>
         </div>
 
-        <!-- Architecture Schematic Diagram -->
-        <div class="topology-col">
-          <div class="topology-box">
-            <div class="topology-header">
-              <span>ISOLATED SYSTEM TOPOLOGY</span>
-              <span class="text-cyan">ENCLAVE: ACTIVE</span>
+        <div class="calc-right">
+          <div class="calc-summary-card">
+            <span class="calc-badge">Estimated Monthly Investment</span>
+            <div class="calc-cost-display">
+              <span class="calc-cost-currency">₹</span>
+              <span class="calc-cost-amount font-mono">{{ monthlyCostInr() | number }}</span>
+              <span class="calc-cost-period">/ mo</span>
             </div>
-            <div class="topology-stack">
-              <div class="topology-node">
-                <span class="flex-center-gap">
-                  <span class="material-symbols-outlined icon-cyan">account_balance</span> Banking Aggregation
-                </span>
-                <span class="node-tag">Plaid / Teller E2EE</span>
+            <span class="calc-usd-sub">(~${{ monthlyCostUsd() | number }} USD / month)</span>
+
+            <div class="calc-features-list">
+              <div class="calc-feature-item">
+                <span class="material-symbols-outlined icon-cyan">check</span>
+                <span>Unlimited client portfolios &amp; team seats</span>
               </div>
-              <div class="topology-arrow">
-                <span class="material-symbols-outlined icon-cyan">arrow_downward</span>
+              <div class="calc-feature-item">
+                <span class="material-symbols-outlined icon-cyan">check</span>
+                <span>Automated bank statement CSV &amp; PDF parsers</span>
               </div>
-              <div class="topology-node enclave-highlight">
-                <span class="flex-center-gap">
-                  <span class="material-symbols-outlined icon-cyan">shield</span> Anonymizer & Vectorizer
-                </span>
-                <span class="enclave-tag">Rust Enclave</span>
+              <div class="calc-feature-item">
+                <span class="material-symbols-outlined icon-cyan">check</span>
+                <span>Multimodal Vision Invoice OCR with GST extraction</span>
               </div>
-              <div class="topology-arrow">
-                <span class="material-symbols-outlined icon-cyan">arrow_downward</span>
-              </div>
-              <div class="topology-node">
-                <span class="flex-center-gap">
-                  <span class="material-symbols-outlined icon-cyan">neurology</span> Private Reasoning Copilot
-                </span>
-                <span class="node-tag">Zero PII Retained</span>
+              <div class="calc-feature-item">
+                <span class="material-symbols-outlined icon-cyan">check</span>
+                <span>SHA-256 Immutable Statutory Audit Trail</span>
               </div>
             </div>
+
+            <button type="button" class="btn-cta-primary w-full" (click)="handleLaunchApp()">
+              Claim 14-Day Free Pilot
+            </button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 7. HIGH-IMPACT FINAL CTA BANNER -->
+    <!-- 6. EARLY ACCESS / CA PILOT FORM -->
     <section class="section-container" id="cta-section">
       <div class="cta-banner">
-        <div class="cta-flare"></div>
-        <div class="cta-inner">
-          <span class="cta-tagline">Immediate Access</span>
-          <h2 class="cta-title">Experience Financial Clarity Today.</h2>
-          <p class="cta-subtitle">
-            Join the private alpha cohort. Step into the cockpit of the first true financial operating system.
+        <div class="cta-content">
+          <span class="section-tagline text-cyan">Beachhead Access</span>
+          <h2 class="cta-title">Join India's Top CA Firms &amp; Fast-Growing CFOs.</h2>
+          <p class="cta-desc">
+            We are onboarding 5 selected CA and enterprise accounting firms for private pilot access with dedicated engineering support.
           </p>
 
-          <!-- Email Input + Button Form -->
-          <form class="early-access-form" (submit)="$event.preventDefault(); submitEarlyAccess()">
-            <div class="input-wrap">
-              <input type="email" class="early-access-input" placeholder="name@domain.com" [(ngModel)]="emailInput"
-                name="email" required />
+          <form (ngSubmit)="submitPilotRequest()" class="cta-form">
+            <div class="form-inputs-row">
+              <input
+                type="email"
+                [(ngModel)]="firmEmail"
+                name="firmEmail"
+                placeholder="firm.partner@auditgroup.in"
+                required
+                class="cta-input"
+              />
+              <button type="submit" class="btn-cta-submit" [disabled]="isSubmitting">
+                <span>{{ isSubmitting ? 'Securing Seat...' : 'Request Pilot Key' }}</span>
+                <span class="material-symbols-outlined">key</span>
+              </button>
             </div>
-            <button type="submit" class="btn-early-access" [disabled]="isSubmitting">
-              {{ isSubmitting ? 'Registering...' : 'Get Early Access' }}
-            </button>
+
+            <div class="alert-success-box" *ngIf="successMessage">
+              <span class="material-symbols-outlined">check_circle</span>
+              <span>{{ successMessage }}</span>
+            </div>
+
+            <div class="alert-error-box" *ngIf="errorMessage">
+              <span class="material-symbols-outlined">error</span>
+              <span>{{ errorMessage }}</span>
+            </div>
           </form>
-
-          <!-- Status Messages -->
-          <div *ngIf="successMessage" class="early-access-success">
-            ✓ {{ successMessage }}
-          </div>
-          <div *ngIf="errorMessage" class="early-access-error">
-            ⚠ {{ errorMessage }}
-          </div>
-
-          <div class="cta-trust-row">
-            <span class="flex-center-gap"><span class="cyan-bullet"></span> Instant Demo Sandbox</span>
-            <span class="flex-center-gap"><span class="cyan-bullet"></span> Zero Credit Card Required</span>
-          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Comprehensive Footer -->
-  <footer class="footer-wrapper">
+  <!-- Global Footer -->
+  <footer class="footer">
     <div class="footer-container">
-      <div class="footer-grid">
-        <div class="footer-brand-col">
-          <img src="images/logos/aequus-logo-new.png" alt="AEQUUS Logo" class="footer-logo" />
-          <p class="footer-tagline">Intelligence for your financial life.</p>
-          <p class="footer-desc">
-            AEQUUS synthesizes multi-asset telemetry, institutional-grade risk models, and private autonomous agents to
-            govern wealth with mathematical discipline.
-          </p>
-          <div class="footer-status">
-            <span class="pulse-dot"></span>
-            <span class="status-text">Systems Optimal • End-to-End Encrypted</span>
-          </div>
-        </div>
-
-        <div class="footer-nav-col">
-          <h4 class="footer-nav-title">Platform Pillars</h4>
-          <ul class="footer-nav-list">
-            <li>Autonomous Rebalancing</li>
-            <li>Tax-Loss Telemetry</li>
-            <li>Multi-Vault Liquidity</li>
-            <li>Cross-Asset Intelligence</li>
-          </ul>
-        </div>
-
-        <div class="footer-nav-col">
-          <h4 class="footer-nav-title">Security & Privacy</h4>
-          <ul class="footer-nav-list">
-            <li>Zero-Knowledge Attestation</li>
-            <li>Hardware Enclave Compute</li>
-            <li>SOC 2 Type II Certified</li>
-            <li>Institutional Custody Guards</li>
-          </ul>
-        </div>
-
-        <div class="footer-nav-col">
-          <h4 class="footer-nav-title">Compliance & Legal</h4>
-          <ul class="footer-nav-list">
-            <li>SEC Registered Advisory</li>
-            <li>Privacy Commitment</li>
-            <li>Terms of Execution</li>
-            <li>System Disclosures</li>
-          </ul>
-        </div>
+      <div class="footer-brand">
+        <img src="images/logos/aequus-logo-new.png" alt="Aequus" class="footer-logo" />
+        <p class="footer-tag">Autonomous Financial Close &amp; Reconciliation Engine for modern CA firms and enterprises.</p>
       </div>
-
       <div class="footer-bottom">
-        <p>© 2026 AEQUUS Technologies Inc. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="#security-section">Security Whitepaper</a>
-          <a href="#demo-preview">Status Telemetry</a>
-          <a href="#security-section">Privacy Architecture</a>
-        </div>
+        <span>© 2026 Aequus Technologies. All rights reserved.</span>
+        <span>Built with Java 21, Spring Boot 3.3, and Multimodal AI.</span>
       </div>
     </div>
   </footer>
